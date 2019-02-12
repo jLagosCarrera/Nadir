@@ -9,6 +9,8 @@ public class LevelGenerator {
 
     public LevelGenerator() {
         rooms = new Room[levelSize][levelSize];
+        initializeRooms();
+        generateRoomType();
     }
 
     /**
@@ -27,16 +29,27 @@ public class LevelGenerator {
      */
     private void generateRoomType() {
         int currentX, currentY, prevX, prevY;
+        boolean weGoDown;
 
         //We generate where the spawn room will be on the top row.
         currentX = (int) (Math.random() * levelSize);
+        prevX = currentX;
         currentY = 0;
-        rooms[currentX][currentY].setType(1);
-        startRoom = rooms[currentX][currentY];
+        prevY = currentY;
+        rooms[currentY][currentX].setType(1);
+        startRoom = rooms[currentY][currentX];
 
-        while (currentY < 4) {
-            boolean weGoDown;
+        while (currentY < levelSize) {
             int random = (int) (Math.random() * 100);
+            weGoDown = false;
+
+            for (int i = 0; i < rooms.length; i++) {
+                for (int j = 0; j < rooms[i].length; j++) {
+                    System.out.print(rooms[i][j].getType() + " ");
+                }
+                System.out.println("");
+            }
+            System.out.println("-------");
 
             //40% chances going left, 40% chances going right, 20% chances going down
             switch (random) {
@@ -80,6 +93,17 @@ public class LevelGenerator {
                 case 37:
                 case 38:
                 case 39:
+                    if (currentX > 0) {
+                        if (rooms[currentY][currentX - 1].getType() == 0) {
+                            currentX--;
+                        }
+                    } else if (currentX < levelSize - 1) {
+                        if (rooms[currentY][currentX + 1].getType() == 0) {
+                            currentX++;
+                        }
+                    } else {
+                        weGoDown = true;
+                    }
                     break;
                 case 40:
                 case 41:
@@ -121,11 +145,38 @@ public class LevelGenerator {
                 case 77:
                 case 78:
                 case 79:
+                    if (currentX < levelSize - 1) {
+                        if (rooms[currentY][currentX + 1].getType() == 0) {
+                            currentX++;
+                        }
+                    } else if (currentX > 0) {
+                        if (rooms[currentY][currentX - 1].getType() == 0) {
+                            currentX--;
+                        }
+                    } else {
+                        weGoDown = true;
+                    }
                     break;
                 default:
+                    weGoDown = true;
                     break;
             }
 
+            if (weGoDown) {
+                currentY++;
+
+                if (currentY < levelSize) {
+                    rooms[prevY][prevX].setType(2);
+                    rooms[currentY][currentX].setType(3);
+                } else {
+                    endRoom = rooms[currentY - 1][currentX];
+                }
+            } else {
+                rooms[currentY][currentX].setType(1);
+            }
+
+            prevX = currentX;
+            prevY = currentY;
         }
     }
 }

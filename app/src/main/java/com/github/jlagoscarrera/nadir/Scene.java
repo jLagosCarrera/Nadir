@@ -3,8 +3,6 @@ package com.github.jlagoscarrera.nadir;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
 import android.graphics.Rect;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -13,8 +11,7 @@ public class Scene {
     Context context;
     int sceneId;
     int screenWidth, screenHeight;
-    Paint pButton;
-    Rect backRect;
+    MenuButton btnBack;
     Bitmap background;
 
     public Scene(Context context, int sceneId, int screenWidth, int screenHeight) {
@@ -23,11 +20,8 @@ public class Scene {
         this.screenWidth = screenWidth;
         this.screenHeight = screenHeight;
 
-        pButton = new Paint();
-        pButton.setColor(Color.RED);
-
-        backRect = new Rect(screenWidth-screenWidth/7, 0, screenWidth, screenWidth/7);
-}
+        btnBack = new MenuButton((screenWidth / 24) * 22, 0, screenWidth, (screenHeight / 12) * 2);
+    }
 
     public int onTouchEvent(MotionEvent event) {
         int pointerIndex = event.getActionIndex();        //Obtain action index.
@@ -39,9 +33,8 @@ public class Scene {
                 break;
             case MotionEvent.ACTION_UP:             //Last finger up.
             case MotionEvent.ACTION_POINTER_UP:     //Any finger that isnt the last up.
-                if (isTouched(backRect, event) && sceneId != 0) return 0;
+                if (isTouched(btnBack.getButton(), event) && sceneId != 0) return 0;
                 break;
-
             case MotionEvent.ACTION_MOVE: //Any finger is moved.
                 break;
             default:
@@ -59,7 +52,7 @@ public class Scene {
     //Drawing routine, called from the game thread.
     public void draw(Canvas c) {
         try {
-            if (sceneId != 0) c.drawRect(backRect, pButton);
+            if (sceneId != 0) btnBack.draw(c);
         } catch (Exception e) {
             Log.i("Drawing error", e.getLocalizedMessage());
         }

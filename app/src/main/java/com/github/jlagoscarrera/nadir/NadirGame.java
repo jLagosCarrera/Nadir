@@ -31,6 +31,7 @@ public class NadirGame extends SurfaceView implements SurfaceHolder.Callback {
             int newScene = actualScene.onTouchEvent(event);
             if (newScene != actualScene.sceneId) {
                 switch (newScene) {
+                    //TODO handle scene change
 //                    case 0:
 //                        actualScene = new Menu(context, 0, anchoPantalla, altoPantalla);
 //                        break;
