@@ -7,7 +7,28 @@ public class LevelGenerator {
     private Room startRoom;
     private Room endRoom;
 
-    public LevelGenerator() {
+    public Room[][] getRooms() {
+        return rooms;
+    }
+
+    public Room getStartRoom() {
+        return startRoom;
+    }
+
+    public Room getEndRoom() {
+        return endRoom;
+    }
+
+    public int getLevelSize() {
+        return levelSize;
+    }
+
+    public void setLevelSize(int levelSize) {
+        this.levelSize = levelSize;
+    }
+
+    public LevelGenerator(int levelSize) {
+        this.levelSize = levelSize;
         rooms = new Room[levelSize][levelSize];
         initializeRooms();
         generateRoomType();
@@ -43,13 +64,14 @@ public class LevelGenerator {
             int random = (int) (Math.random() * 100);
             weGoDown = false;
 
-            for (int i = 0; i < rooms.length; i++) {
-                for (int j = 0; j < rooms[i].length; j++) {
-                    System.out.print(rooms[i][j].getType() + " ");
-                }
-                System.out.println("");
-            }
-            System.out.println("-------");
+//            //Debug for watching how it generates
+//            for (int i = 0; i < rooms.length; i++) {
+//                for (int j = 0; j < rooms[i].length; j++) {
+//                    System.out.print(rooms[i][j].getType() + " ");
+//                }
+//                System.out.println("");
+//            }
+//            System.out.println("-------");
 
             //40% chances going left, 40% chances going right, 20% chances going down
             switch (random) {
