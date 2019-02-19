@@ -23,10 +23,10 @@ public class NadirActivity extends AppCompatActivity {
         getWindow().requestFeature(Window.FEATURE_NO_TITLE);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 
-        NadirGame nadirGame = new NadirGame(this);
-        nadirGame.setKeepScreenOn(true);
+        NadirEngine nadirEngine = new NadirEngine(this);
+        nadirEngine.setKeepScreenOn(true);
 
-        setContentView(nadirGame);
+        setContentView(nadirEngine);
     }
 
     @Override

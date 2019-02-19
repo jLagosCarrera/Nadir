@@ -1,6 +1,9 @@
 package com.github.jlagoscarrera.nadir;
 
 import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.Rect;
 import android.util.Log;
 
 import java.util.ArrayList;
@@ -199,7 +202,7 @@ public class RoomFiller {
         });
     }
 
-    private void processGraphics(Canvas c) {
+    public void processGraphics(Canvas c) {
         for (Room[] row : level.getRooms()) {
             for (Room r : row) {
                 String[] template;
@@ -208,29 +211,38 @@ public class RoomFiller {
                 y = r.getY();
 
                 if (r.getType() == 1) {
-                    template = roomType1.get((int) Math.random() * roomType1.size());
+                    template = roomType1.get((int) (Math.random() * roomType1.size()));
                 } else if (r.getType() == 2) {
-                    template = roomType2.get((int) Math.random() * roomType2.size());
+                    template = roomType2.get((int) (Math.random() * roomType2.size()));
                 } else if (r.getType() == 3) {
-                    template = roomType3.get((int) Math.random() * roomType3.size());
+                    template = roomType3.get((int) (Math.random() * roomType3.size()));
                 } else {
-                    template = roomType0.get((int) Math.random() * roomType0.size());
+                    template = roomType0.get((int) (Math.random() * roomType0.size()));
                 }
 
-                for (String s : template) {
-                    for (int i = 0; i < s.length(); i++) {
-                        char block = s.charAt(i);
+                for (int i = 0; i < template.length; i++) {
+                    for (int j = 0; j < template[i].length(); j++) {
+                        char block = template[i].charAt(j);
+                        int blockSize = 5;
+                        int roomHeight = 40;
+                        int roomWidth = 50;
+                        Rect blockRect = new Rect((x * roomHeight) + (j * blockSize), (y * roomWidth) + (i * blockSize),
+                                (x * roomHeight) + (j * blockSize) + blockSize, (y * roomWidth) + (i * blockSize) + blockSize);
 
                         switch (block) {
                             case '0':
-
+                                Paint pBlock1 = new Paint();
+                                pBlock1.setColor(Color.WHITE);
+                                c.drawRect(blockRect, pBlock1);
                                 break;
                             case '1':
+                                Paint pBlock2 = new Paint();
+                                pBlock2.setColor(Color.BLACK);
+                                c.drawRect(blockRect, pBlock2);
                                 break;
                         }
                     }
                 }
-                c.trans
             }
         }
     }

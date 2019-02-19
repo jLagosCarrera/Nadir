@@ -1,13 +1,19 @@
 package com.github.jlagoscarrera.nadir;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.util.Log;
 import android.view.MotionEvent;
 
+import com.github.jlagoscarrera.nadirGame.R;
+
 public class Menu extends Scene {
+    private int[] backgrounds = {R.mipmap.back, R.mipmap.mid, R.mipmap.front};
+    MovingBackground[] parallax;
     MenuButton btnPlay, btnChest, btnHiScores, btnOptions, btnExit, btnNoMusic, btnNoSound, btnNoVibrate;
     MenuButton title;
     int widthDiv, heighDiv;
@@ -18,7 +24,14 @@ public class Menu extends Scene {
         widthDiv = screenWidth / 24;
         heighDiv = screenHeight / 12;
 
-        //TODO Internationalization
+        //Parallax
+        parallax = new MovingBackground[backgrounds.length];
+        for (int i = 0; i < parallax.length; i++) {
+            Bitmap aux = BitmapFactory.decodeResource(context.getResources(), backgrounds[i]);
+            aux = Bitmap.createScaledBitmap(aux, screenWidth, screenHeight, true);
+            parallax[i] = new MovingBackground(aux, screenWidth, screenHeight);
+        }
+
         //Title
         title = new MenuButton(widthDiv * 6, 0, widthDiv * 18, heighDiv * 3);
         title.getpButton().setColor(Color.TRANSPARENT);
@@ -76,12 +89,13 @@ public class Menu extends Scene {
                 break;
             case MotionEvent.ACTION_UP:             //Last finger up.
             case MotionEvent.ACTION_POINTER_UP:     //Any finger that isnt the last up.
-                //TODO touches en el menu
-//                if (isTouched(juego, event)) return 1;
-//                else if (isTouched(opciones, event)) return 99;
-//                else if (isTouched(ayuda, event)) return 98;
-//                else if (isTouched(records, event)) return 97;
-//                break;
+                //Touches en el menu
+                if (isTouched(btnPlay.getButton(), event)) return 1;
+                else if (isTouched(btnChest.getButton(), event)) return 99;
+                else if (isTouched(btnHiScores.getButton(), event)) return 98;
+                else if (isTouched(btnOptions.getButton(), event)) return 97;
+                else if (isTouched(btnExit.getButton(), event)) return 96;
+                break;
 
             case MotionEvent.ACTION_MOVE: //Any finger is moved.
                 break;
@@ -94,14 +108,22 @@ public class Menu extends Scene {
 
     //We refresh game physics on screen.
     public void refreshPhysics() {
-
+        for (int i = 0; i < parallax.length; i++) {
+            parallax[i].move((i+1) * 2);
+            if (parallax[i].position.x > screenWidth) {
+                parallax[i].position.x = screenWidth - parallax[i].image.getWidth();
+            }
+        }
     }
 
     //Drawing routine, called from the game thread.
     public void draw(Canvas c) {
         try {
-            //TODO parallax
-//            c.drawBitmap(fondo, 0, 0, null);
+            //Draw parallax
+            for (int i = 0; i < parallax.length; i++) {
+                c.drawBitmap(parallax[i].image, parallax[i].position.x, parallax[i].position.y, null);
+                c.drawBitmap(parallax[i].image, parallax[i].position.x - parallax[i].image.getWidth(), parallax[i].position.y, null);
+            }
 
             //Draw all buttons
             title.draw(c);

@@ -6,7 +6,7 @@ import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
-public class NadirGame extends SurfaceView implements SurfaceHolder.Callback {
+public class NadirEngine extends SurfaceView implements SurfaceHolder.Callback {
     private SurfaceHolder surfaceHolder;    //Abstract interface for handling drawing surface.
     private Context context;                //Application context.
 
@@ -16,7 +16,7 @@ public class NadirGame extends SurfaceView implements SurfaceHolder.Callback {
     private boolean running = false;        //Thread control.
     private Scene actualScene;
 
-    public NadirGame(Context context) {
+    public NadirEngine(Context context) {
         super(context);
         this.surfaceHolder = getHolder();       //We obtain the holder.
         this.surfaceHolder.addCallback(this);   //We indicate where callback methods are.
@@ -31,13 +31,12 @@ public class NadirGame extends SurfaceView implements SurfaceHolder.Callback {
             int newScene = actualScene.onTouchEvent(event);
             if (newScene != actualScene.sceneId) {
                 switch (newScene) {
-                    //TODO handle scene change
-//                    case 0:
-//                        actualScene = new Menu(context, 0, anchoPantalla, altoPantalla);
-//                        break;
-//                    case 1:
-//                        actualScene = new Game(context, nuevaEscena, anchoPantalla, altoPantalla);
-//                        break;
+                    case 0:
+                        actualScene = new Menu(context, 0, screenWidth, screenHeight);
+                        break;
+                    case 1:
+                        actualScene = new PlayScene(context, 1, screenWidth, screenHeight);
+                        break;
                 }
             }
         }
@@ -84,6 +83,12 @@ public class NadirGame extends SurfaceView implements SurfaceHolder.Callback {
 
         @Override
         public void run() {
+            long sleepTime = 0;
+            final int FPS = 60;
+            final int TPS = 1000000000;
+            final int TEMPORAL_FRAGMENT = TPS / FPS;
+            long referenceTime = System.nanoTime();
+
             while (running) {
                 Canvas c = null;    //Required repaint all the canvas.
                 try {
@@ -97,6 +102,17 @@ public class NadirGame extends SurfaceView implements SurfaceHolder.Callback {
                 } finally {  //Even if there is exception or not we have to liberate the canvas.
                     if (c != null) {
                         surfaceHolder.unlockCanvasAndPost(c);
+                    }
+                }
+
+                referenceTime += TEMPORAL_FRAGMENT;
+                sleepTime = referenceTime - System.nanoTime();
+
+                if (sleepTime > 0) {
+                    try {
+                        Thread.sleep(sleepTime / 1000000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
                     }
                 }
             }
