@@ -6,10 +6,10 @@ import android.util.Log;
 
 import com.github.jlagoscarrera.nadir.Scripts.RoomFiller;
 
-public class PlayScene extends Scene {
+public class Play extends Scene {
     RoomFiller r;
 
-    public PlayScene(Context context, int sceneId, int screenWidth, int screenHeight) {
+    public Play(Context context, int sceneId, int screenWidth, int screenHeight) {
         super(context, sceneId, screenWidth, screenHeight);
 
         r = new RoomFiller();

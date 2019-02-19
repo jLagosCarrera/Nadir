@@ -7,7 +7,8 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
 import com.github.jlagoscarrera.nadir.Scenes.Menu;
-import com.github.jlagoscarrera.nadir.Scenes.PlayScene;
+import com.github.jlagoscarrera.nadir.Scenes.Options;
+import com.github.jlagoscarrera.nadir.Scenes.Play;
 import com.github.jlagoscarrera.nadir.Scenes.Scene;
 
 public class NadirEngine extends SurfaceView implements SurfaceHolder.Callback {
@@ -39,7 +40,16 @@ public class NadirEngine extends SurfaceView implements SurfaceHolder.Callback {
                         actualScene = new Menu(context, 0, screenWidth, screenHeight);
                         break;
                     case 1:
-                        actualScene = new PlayScene(context, 1, screenWidth, screenHeight);
+                        actualScene = new Play(context, 1, screenWidth, screenHeight);
+                        break;
+                    case 96:
+                        break;
+                    case 97:
+                        break;
+                    case 98:
+                        actualScene = new Options(context, 98, screenWidth, screenHeight);
+                        break;
+                    case 99:
                         break;
                 }
             }

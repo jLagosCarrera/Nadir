@@ -14,8 +14,6 @@ import com.github.jlagoscarrera.nadir.Components.MovingBackground;
 import com.github.jlagoscarrera.nadirGame.R;
 
 public class Menu extends Scene {
-    private int[] backgrounds = {R.mipmap.back, R.mipmap.mid, R.mipmap.front};
-    MovingBackground[] parallax;
     MenuButton btnPlay, btnChest, btnHiScores, btnOptions, btnExit, btnNoMusic, btnNoSound, btnNoVibrate;
     MenuButton title;
     int widthDiv, heighDiv;
@@ -25,14 +23,6 @@ public class Menu extends Scene {
 
         widthDiv = screenWidth / 24;
         heighDiv = screenHeight / 12;
-
-        //Parallax
-        parallax = new MovingBackground[backgrounds.length];
-        for (int i = 0; i < parallax.length; i++) {
-            Bitmap aux = BitmapFactory.decodeResource(context.getResources(), backgrounds[i]);
-            aux = Bitmap.createScaledBitmap(aux, screenWidth, screenHeight, true);
-            parallax[i] = new MovingBackground(aux, screenWidth, screenHeight);
-        }
 
         //Title
         title = new MenuButton(widthDiv * 6, 0, widthDiv * 18, heighDiv * 3);
@@ -93,10 +83,10 @@ public class Menu extends Scene {
             case MotionEvent.ACTION_POINTER_UP:     //Any finger that isnt the last up.
                 //Touches en el menu
                 if (isTouched(btnPlay.getButton(), event)) return 1;
-                else if (isTouched(btnChest.getButton(), event)) return 99;
-                else if (isTouched(btnHiScores.getButton(), event)) return 98;
-                else if (isTouched(btnOptions.getButton(), event)) return 97;
-                else if (isTouched(btnExit.getButton(), event)) return 96;
+                else if (isTouched(btnChest.getButton(), event)) return 96;
+                else if (isTouched(btnHiScores.getButton(), event)) return 97;
+                else if (isTouched(btnOptions.getButton(), event)) return 98;
+                else if (isTouched(btnExit.getButton(), event)) return 99;
                 break;
 
             case MotionEvent.ACTION_MOVE: //Any finger is moved.
@@ -110,22 +100,14 @@ public class Menu extends Scene {
 
     //We refresh game physics on screen.
     public void refreshPhysics() {
-        for (int i = 0; i < parallax.length; i++) {
-            parallax[i].move((i+1) * 2);
-            if (parallax[i].position.x > screenWidth) {
-                parallax[i].position.x = screenWidth - parallax[i].image.getWidth();
-            }
-        }
+        refreshParallax();
     }
 
     //Drawing routine, called from the game thread.
     public void draw(Canvas c) {
         try {
             //Draw parallax
-            for (int i = 0; i < parallax.length; i++) {
-                c.drawBitmap(parallax[i].image, parallax[i].position.x, parallax[i].position.y, null);
-                c.drawBitmap(parallax[i].image, parallax[i].position.x - parallax[i].image.getWidth(), parallax[i].position.y, null);
-            }
+            drawParallax(c);
 
             //Draw all buttons
             title.draw(c);
