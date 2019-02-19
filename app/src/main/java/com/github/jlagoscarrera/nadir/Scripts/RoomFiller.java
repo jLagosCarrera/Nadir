@@ -1,4 +1,4 @@
-package com.github.jlagoscarrera.nadir;
+package com.github.jlagoscarrera.nadir.Scripts;
 
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -6,8 +6,10 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.util.Log;
 
+import com.github.jlagoscarrera.nadir.Components.Room;
+import com.github.jlagoscarrera.nadir.Scripts.LevelGenerator;
+
 import java.util.ArrayList;
-import java.util.Random;
 
 public class RoomFiller {
     ArrayList<String[]> roomType1 = new ArrayList<>();
@@ -203,8 +205,9 @@ public class RoomFiller {
     }
 
     public void processGraphics(Canvas c) {
-        for (Room[] row : level.getRooms()) {
-            for (Room r : row) {
+        for (int a = 0; a < level.getRooms().length; a++) {
+            for (int b = 0; b < level.getRooms()[a].length; b++) {
+                Room r = level.getRooms()[a][b];
                 String[] template;
                 int x, y;
                 x = r.getX();
@@ -223,12 +226,11 @@ public class RoomFiller {
                 for (int i = 0; i < template.length; i++) {
                     for (int j = 0; j < template[i].length(); j++) {
                         char block = template[i].charAt(j);
-                        int blockSize = 5;
-                        int roomHeight = 40;
-                        int roomWidth = 50;
+                        int blockSize = 50;
+                        int roomHeight = 400;
+                        int roomWidth = 500;
                         Rect blockRect = new Rect((x * roomHeight) + (j * blockSize), (y * roomWidth) + (i * blockSize),
                                 (x * roomHeight) + (j * blockSize) + blockSize, (y * roomWidth) + (i * blockSize) + blockSize);
-
                         switch (block) {
                             case '0':
                                 Paint pBlock1 = new Paint();

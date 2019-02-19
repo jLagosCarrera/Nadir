@@ -1,4 +1,4 @@
-package com.github.jlagoscarrera.nadir;
+package com.github.jlagoscarrera.nadir.Components;
 
 public class Room {
 

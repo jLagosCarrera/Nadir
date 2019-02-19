@@ -1,4 +1,4 @@
-package com.github.jlagoscarrera.nadir;
+package com.github.jlagoscarrera.nadir.Scenes;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -9,6 +9,8 @@ import android.graphics.Typeface;
 import android.util.Log;
 import android.view.MotionEvent;
 
+import com.github.jlagoscarrera.nadir.Components.MenuButton;
+import com.github.jlagoscarrera.nadir.Components.MovingBackground;
 import com.github.jlagoscarrera.nadirGame.R;
 
 public class Menu extends Scene {

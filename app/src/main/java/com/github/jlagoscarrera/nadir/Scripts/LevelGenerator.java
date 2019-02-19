@@ -1,4 +1,6 @@
-package com.github.jlagoscarrera.nadir;
+package com.github.jlagoscarrera.nadir.Scripts;
+
+import com.github.jlagoscarrera.nadir.Components.Room;
 
 public class LevelGenerator {
 

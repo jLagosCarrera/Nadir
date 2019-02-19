@@ -1,8 +1,10 @@
-package com.github.jlagoscarrera.nadir;
+package com.github.jlagoscarrera.nadir.Scenes;
 
 import android.content.Context;
 import android.graphics.Canvas;
 import android.util.Log;
+
+import com.github.jlagoscarrera.nadir.Scripts.RoomFiller;
 
 public class PlayScene extends Scene {
     RoomFiller r;

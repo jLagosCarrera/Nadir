@@ -1,10 +1,14 @@
-package com.github.jlagoscarrera.nadir;
+package com.github.jlagoscarrera.nadir.Core;
 
 import android.content.Context;
 import android.graphics.Canvas;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+
+import com.github.jlagoscarrera.nadir.Scenes.Menu;
+import com.github.jlagoscarrera.nadir.Scenes.PlayScene;
+import com.github.jlagoscarrera.nadir.Scenes.Scene;
 
 public class NadirEngine extends SurfaceView implements SurfaceHolder.Callback {
     private SurfaceHolder surfaceHolder;    //Abstract interface for handling drawing surface.

@@ -1,4 +1,4 @@
-package com.github.jlagoscarrera.nadir;
+package com.github.jlagoscarrera.nadir.Scenes;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -7,9 +7,11 @@ import android.graphics.Rect;
 import android.util.Log;
 import android.view.MotionEvent;
 
+import com.github.jlagoscarrera.nadir.Components.MenuButton;
+
 public class Scene {
     Context context;
-    int sceneId;
+    public int sceneId;
     int screenWidth, screenHeight;
     MenuButton btnBack;
     Bitmap background;

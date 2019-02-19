@@ -1,6 +1,8 @@
-package com.github.jlagoscarrera.nadir;
+package com.github.jlagoscarrera.nadir.Components;
 
 import android.graphics.Bitmap;
+
+import com.github.jlagoscarrera.nadir.Components.Character;
 
 public class Player extends Character {
 
