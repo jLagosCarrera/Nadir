@@ -12,7 +12,8 @@ public class MenuButton {
     private String text;
     private Rect button;
     private int textX, textY;
-    private Paint pButton, pText;
+    private Paint pButton = new Paint();
+    private Paint pText = new Paint();
 
     public MenuButton(int left, int top, int right, int bottom) {
         this.left = left;
@@ -25,10 +26,8 @@ public class MenuButton {
         textX = button.centerX();
         textY = button.centerY();
 
-        pButton = new Paint();
         pButton.setColor(Color.RED);
 
-        pText = new Paint();
         pText.setColor(Color.BLACK);
         pText.setTextAlign(Paint.Align.CENTER);
     }

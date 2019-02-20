@@ -49,11 +49,11 @@ public class Menu extends Scene {
         btnHiScores.getpText().setTypeface(Typeface.createFromAsset(context.getAssets(), "font/Poiretone.ttf"));
         btnHiScores.setText("High Scores");
 
-        //Options button
+        //OptionsSettings button
         btnOptions = new MenuButton(widthDiv, heighDiv * 9, widthDiv * 11, heighDiv * 11);
         btnOptions.getpText().setTextSize((int) (heighDiv * 2 * 0.75));
         btnOptions.getpText().setTypeface(Typeface.createFromAsset(context.getAssets(), "font/Poiretone.ttf"));
-        btnOptions.setText("Options");
+        btnOptions.setText("OptionsSettings");
 
         //Exit button
         btnExit = new MenuButton(widthDiv * 13, heighDiv * 9, widthDiv * 23, heighDiv * 11);

@@ -2,14 +2,22 @@ package com.github.jlagoscarrera.nadir.Core;
 
 import android.content.Context;
 import android.graphics.Canvas;
+import android.media.AudioManager;
+import android.media.MediaPlayer;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
+import com.github.jlagoscarrera.nadir.Scenes.Chest;
+import com.github.jlagoscarrera.nadir.Scenes.HiScores;
 import com.github.jlagoscarrera.nadir.Scenes.Menu;
 import com.github.jlagoscarrera.nadir.Scenes.Options;
 import com.github.jlagoscarrera.nadir.Scenes.Play;
 import com.github.jlagoscarrera.nadir.Scenes.Scene;
+import com.github.jlagoscarrera.nadirGame.R;
+
+import java.io.IOException;
 
 public class NadirEngine extends SurfaceView implements SurfaceHolder.Callback {
     private SurfaceHolder surfaceHolder;    //Abstract interface for handling drawing surface.
@@ -20,6 +28,11 @@ public class NadirEngine extends SurfaceView implements SurfaceHolder.Callback {
     private GameThread gameThread;          //Thread that handles drawing and physics.
     private boolean running = false;        //Thread control.
     private Scene actualScene;
+    private AudioManager audioManager;
+    public MediaPlayer gameMusic;
+    private int volume;
+    public OptionsSettings options;
+
 
     public NadirEngine(Context context) {
         super(context);
@@ -27,7 +40,8 @@ public class NadirEngine extends SurfaceView implements SurfaceHolder.Callback {
         this.surfaceHolder.addCallback(this);   //We indicate where callback methods are.
         this.context = context;                 //We obtain context.
         gameThread = new GameThread();          //Initialize the thread.
-        setFocusable(true);                     //We assure that it receives isTouched events.
+        options = new OptionsSettings(context);
+        setFocusable(true);                     //We assure that it receives isTouched events./
     }
 
     @Override
@@ -43,13 +57,16 @@ public class NadirEngine extends SurfaceView implements SurfaceHolder.Callback {
                         actualScene = new Play(context, 1, screenWidth, screenHeight);
                         break;
                     case 96:
+                        actualScene = new Chest(context, 1, screenWidth, screenHeight);
                         break;
                     case 97:
+                        actualScene = new HiScores(context, 1, screenWidth, screenHeight);
                         break;
                     case 98:
                         actualScene = new Options(context, 98, screenWidth, screenHeight);
                         break;
                     case 99:
+
                         break;
                 }
             }
@@ -60,14 +77,30 @@ public class NadirEngine extends SurfaceView implements SurfaceHolder.Callback {
 
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
-
+        options.loadOptions();
+        //Audio managing
+        updateAudioObjects();
+        updateVolume();
+        updateMusicPlayer();
     }
 
     @Override
     public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
         screenWidth = width;    //New screen width is set.
         screenHeight = height;  //New screen height is set.
-        actualScene = new Menu(context, 0, screenWidth, screenHeight);
+
+        if (options == null) {
+            options = new OptionsSettings(context);
+        }
+        options.loadOptions();
+        updateAudioObjects();
+        updateVolume();
+        updateMusicPlayer();
+
+
+            actualScene = new Menu(context, 0, screenWidth, screenHeight);
+
+
         gameThread.setWorking(true);                    //We start the game.
         if (gameThread.getState() == Thread.State.NEW)  //Creates the thread if it isnt created.
             gameThread.start();
@@ -83,8 +116,38 @@ public class NadirEngine extends SurfaceView implements SurfaceHolder.Callback {
         gameThread.setWorking(false);   //We stop game thread.
         try {
             gameThread.join();          //Wait till it finishes.
+            gameMusic.pause();
+            options.saveOptions();
         } catch (InterruptedException e) {
             e.printStackTrace();
+        }
+    }
+
+    public void updateAudioObjects() {
+        if (audioManager == null) {
+            audioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
+        }
+        if (gameMusic == null) {
+            gameMusic = MediaPlayer.create(context, R.raw.antares_outsider);
+            try {
+                gameMusic.prepare();
+            } catch (IllegalStateException | IOException e) {
+                Log.e("Error playing music", "" + e.getLocalizedMessage());
+            }
+
+        }
+    }
+
+    public void updateVolume() {
+        volume = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
+        gameMusic.setVolume(volume / 3, volume / 3);
+    }
+
+    public void updateMusicPlayer() {
+        if (!gameMusic.isPlaying() && options.isMusicPlaying()) {
+            gameMusic.start();
+        } else if (gameMusic.isPlaying() && !options.isMusicPlaying()) {
+            gameMusic.pause();
         }
     }
 
@@ -97,13 +160,14 @@ public class NadirEngine extends SurfaceView implements SurfaceHolder.Callback {
 
         @Override
         public void run() {
-            long sleepTime = 0;
-            final int FPS = 60;
+            long sleepTime;
+            final int FPS = 30;
             final int TPS = 1000000000;
             final int TEMPORAL_FRAGMENT = TPS / FPS;
             long referenceTime = System.nanoTime();
 
             while (running) {
+                updateVolume();
                 Canvas c = null;    //Required repaint all the canvas.
                 try {
                     if (!surfaceHolder.getSurface().isValid())
