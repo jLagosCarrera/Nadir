@@ -5,9 +5,15 @@ import android.graphics.Canvas;
 import android.util.Log;
 import android.view.MotionEvent;
 
+import com.github.jlagoscarrera.nadir.Components.MenuButton;
+import com.github.jlagoscarrera.nadir.Core.NadirEngine;
+
 public class Options extends Scene {
-    public Options(Context context, int sceneId, int screenWidth, int screenHeight) {
-        super(context, sceneId, screenWidth, screenHeight);
+    MenuButton btnMusic, btnSound, btnVibrate;
+    MenuButton title;
+
+    public Options(NadirEngine gameReference, int sceneId, int screenWidth, int screenHeight) {
+        super(gameReference, sceneId, screenWidth, screenHeight);
     }
 
     //We refresh game physics on screen.

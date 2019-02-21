@@ -51,22 +51,21 @@ public class NadirEngine extends SurfaceView implements SurfaceHolder.Callback {
             if (newScene != actualScene.sceneId) {
                 switch (newScene) {
                     case 0:
-                        actualScene = new Menu(context, 0, screenWidth, screenHeight);
+                        actualScene = new Menu(this, 0, screenWidth, screenHeight);
                         break;
                     case 1:
-                        actualScene = new Play(context, 1, screenWidth, screenHeight);
+                        actualScene = new Play(this, 1, screenWidth, screenHeight);
                         break;
                     case 96:
-                        actualScene = new Chest(context, 1, screenWidth, screenHeight);
+                        actualScene = new Chest(this, 1, screenWidth, screenHeight);
                         break;
                     case 97:
-                        actualScene = new HiScores(context, 1, screenWidth, screenHeight);
+                        actualScene = new HiScores(this, 1, screenWidth, screenHeight);
                         break;
                     case 98:
-                        actualScene = new Options(context, 98, screenWidth, screenHeight);
+                        actualScene = new Options(this, 98, screenWidth, screenHeight);
                         break;
                     case 99:
-
                         break;
                 }
             }
@@ -98,7 +97,7 @@ public class NadirEngine extends SurfaceView implements SurfaceHolder.Callback {
         updateMusicPlayer();
 
 
-            actualScene = new Menu(context, 0, screenWidth, screenHeight);
+            actualScene = new Menu(this, 0, screenWidth, screenHeight);
 
 
         gameThread.setWorking(true);                    //We start the game.
@@ -161,7 +160,7 @@ public class NadirEngine extends SurfaceView implements SurfaceHolder.Callback {
         @Override
         public void run() {
             long sleepTime;
-            final int FPS = 30;
+            final int FPS = 60;
             final int TPS = 1000000000;
             final int TEMPORAL_FRAGMENT = TPS / FPS;
             long referenceTime = System.nanoTime();

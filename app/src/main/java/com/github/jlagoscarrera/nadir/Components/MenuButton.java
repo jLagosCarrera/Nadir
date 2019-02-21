@@ -1,5 +1,6 @@
 package com.github.jlagoscarrera.nadir.Components;
 
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -12,8 +13,10 @@ public class MenuButton {
     private String text;
     private Rect button;
     private int textX, textY;
-    private Paint pButton = new Paint();
-    private Paint pText = new Paint();
+    private Paint pButton;
+    private Paint pButtonBorder;
+    private Paint pText;
+    private Bitmap icon;
 
     public MenuButton(int left, int top, int right, int bottom) {
         this.left = left;
@@ -26,10 +29,28 @@ public class MenuButton {
         textX = button.centerX();
         textY = button.centerY();
 
-        pButton.setColor(Color.RED);
+        pButton = new Paint();
+        pButton.setColor(Color.DKGRAY);
+        pButton.setAlpha(220);
 
+        pButtonBorder = new Paint();
+        pButtonBorder.setColor(Color.BLACK);
+        pButtonBorder.setStyle(Paint.Style.STROKE);
+        pButtonBorder.setStrokeWidth(2);
+
+        pText = new Paint();
         pText.setColor(Color.BLACK);
         pText.setTextAlign(Paint.Align.CENTER);
+
+        icon = null;
+    }
+
+    public Bitmap getIcon() {
+        return icon;
+    }
+
+    public void setIcon(Bitmap icon) {
+        this.icon = icon;
     }
 
     public int getLeft() {
@@ -88,6 +109,14 @@ public class MenuButton {
         this.pButton = pButton;
     }
 
+    public Paint getpButtonBorder() {
+        return pButtonBorder;
+    }
+
+    public void setpButtonBorder(Paint pButtonBorder) {
+        this.pButtonBorder = pButtonBorder;
+    }
+
     public Paint getpText() {
         return pText;
     }
@@ -98,7 +127,12 @@ public class MenuButton {
 
     public void draw(Canvas c) {
         try {
-            c.drawRect(button, pButton);
+            if (icon == null) {
+                c.drawRect(button, pButton);
+                c.drawRect(button, pButtonBorder);
+            } else {
+                c.drawBitmap(icon, null, button, null);
+            }
             c.drawText(text, textX, textY + pText.getTextSize() / 3, pText);
         } catch (Exception e) {
             Log.i("Drawing error", e.getLocalizedMessage());

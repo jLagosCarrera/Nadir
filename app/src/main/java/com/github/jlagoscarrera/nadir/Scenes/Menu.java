@@ -1,6 +1,5 @@
 package com.github.jlagoscarrera.nadir.Scenes;
 
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -10,65 +9,79 @@ import android.util.Log;
 import android.view.MotionEvent;
 
 import com.github.jlagoscarrera.nadir.Components.MenuButton;
-import com.github.jlagoscarrera.nadir.Components.MovingBackground;
+import com.github.jlagoscarrera.nadir.Core.NadirEngine;
 import com.github.jlagoscarrera.nadirGame.R;
 
 public class Menu extends Scene {
     MenuButton btnPlay, btnChest, btnHiScores, btnOptions, btnExit, btnNoMusic, btnNoSound, btnNoVibrate;
     MenuButton title;
-    int widthDiv, heighDiv;
+    Bitmap[] musicIcons;
+    Bitmap[] soundIcons;
+    Bitmap[] vibrateIcons;
 
-    public Menu(Context context, int sceneId, int screenWidth, int screenHeight) {
-        super(context, sceneId, screenWidth, screenHeight);
-
-        widthDiv = screenWidth / 24;
-        heighDiv = screenHeight / 12;
+    public Menu(NadirEngine gameReference, int sceneId, int screenWidth, int screenHeight) {
+        super(gameReference, sceneId, screenWidth, screenHeight);
 
         //Title
         title = new MenuButton(widthDiv * 6, 0, widthDiv * 18, heighDiv * 3);
         title.getpButton().setColor(Color.TRANSPARENT);
+        title.getpButtonBorder().setColor(Color.TRANSPARENT);
         title.getpText().setTextSize((int) (heighDiv * 3 * 0.75));
-        title.getpText().setTypeface(Typeface.createFromAsset(context.getAssets(), "font/Seaside.ttf"));
+        title.getpText().setTypeface(Typeface.createFromAsset(gameReference.getContext().getAssets(), "font/Seaside.ttf"));
         title.setText("NADIR");
 
         //Play button
         btnPlay = new MenuButton(widthDiv * 6, heighDiv * 3, widthDiv * 18, heighDiv * 5);
         btnPlay.getpText().setTextSize((int) (heighDiv * 2 * 0.75));
-        btnPlay.getpText().setTypeface(Typeface.createFromAsset(context.getAssets(), "font/Poiretone.ttf"));
+        btnPlay.getpText().setTypeface(Typeface.createFromAsset(gameReference.getContext().getAssets(), "font/Poiretone.ttf"));
         btnPlay.setText("Play");
 
         //Chest, skins... button
         btnChest = new MenuButton(widthDiv, heighDiv * 6, widthDiv * 11, heighDiv * 8);
         btnChest.getpText().setTextSize((int) (heighDiv * 2 * 0.75));
-        btnChest.getpText().setTypeface(Typeface.createFromAsset(context.getAssets(), "font/Poiretone.ttf"));
+        btnChest.getpText().setTypeface(Typeface.createFromAsset(gameReference.getContext().getAssets(), "font/Poiretone.ttf"));
         btnChest.setText("Chest");
 
         //High Scores button
         btnHiScores = new MenuButton(widthDiv * 13, heighDiv * 6, widthDiv * 23, heighDiv * 8);
         btnHiScores.getpText().setTextSize((int) (heighDiv * 2 * 0.75));
-        btnHiScores.getpText().setTypeface(Typeface.createFromAsset(context.getAssets(), "font/Poiretone.ttf"));
+        btnHiScores.getpText().setTypeface(Typeface.createFromAsset(gameReference.getContext().getAssets(), "font/Poiretone.ttf"));
         btnHiScores.setText("High Scores");
 
-        //OptionsSettings button
+        //Settings button
         btnOptions = new MenuButton(widthDiv, heighDiv * 9, widthDiv * 11, heighDiv * 11);
         btnOptions.getpText().setTextSize((int) (heighDiv * 2 * 0.75));
-        btnOptions.getpText().setTypeface(Typeface.createFromAsset(context.getAssets(), "font/Poiretone.ttf"));
-        btnOptions.setText("OptionsSettings");
+        btnOptions.getpText().setTypeface(Typeface.createFromAsset(gameReference.getContext().getAssets(), "font/Poiretone.ttf"));
+        btnOptions.setText("Options");
 
         //Exit button
         btnExit = new MenuButton(widthDiv * 13, heighDiv * 9, widthDiv * 23, heighDiv * 11);
         btnExit.getpText().setTextSize((int) (heighDiv * 2 * 0.75));
-        btnExit.getpText().setTypeface(Typeface.createFromAsset(context.getAssets(), "font/Poiretone.ttf"));
+        btnExit.getpText().setTypeface(Typeface.createFromAsset(gameReference.getContext().getAssets(), "font/Poiretone.ttf"));
         btnExit.setText("Exit");
 
+        //Load icons
+        musicIcons = new Bitmap[]{
+                BitmapFactory.decodeResource(gameReference.getResources(), R.mipmap.musicon),
+                BitmapFactory.decodeResource(gameReference.getResources(), R.mipmap.musicoff)};
+        soundIcons = new Bitmap[]{
+                BitmapFactory.decodeResource(gameReference.getResources(), R.mipmap.soundon),
+                BitmapFactory.decodeResource(gameReference.getResources(), R.mipmap.soundoff)};
+        vibrateIcons = new Bitmap[]{
+                BitmapFactory.decodeResource(gameReference.getResources(), R.mipmap.vibrateon),
+                BitmapFactory.decodeResource(gameReference.getResources(), R.mipmap.vibrateoff)};
+
         //No music button
-        btnNoMusic = new MenuButton(widthDiv * 23, 0, screenWidth, heighDiv);
+        btnNoMusic = new MenuButton(widthDiv * 19, 0, widthDiv * 20, heighDiv);
+        drawMusicIcon();
 
         //No sound button
         btnNoSound = new MenuButton(widthDiv * 21, 0, widthDiv * 22, heighDiv);
+        drawSoundIcon();
 
         //No vibrate button
-        btnNoVibrate = new MenuButton(widthDiv * 19, 0, widthDiv * 20, heighDiv);
+        btnNoVibrate = new MenuButton(widthDiv * 23, 0, screenWidth, heighDiv);
+        drawVibrateIcon();
     }
 
     public int onTouchEvent(MotionEvent event) {
@@ -87,6 +100,25 @@ public class Menu extends Scene {
                 else if (isTouched(btnHiScores.getButton(), event)) return 97;
                 else if (isTouched(btnOptions.getButton(), event)) return 98;
                 else if (isTouched(btnExit.getButton(), event)) return 99;
+
+
+                if (isTouched(btnNoMusic.getButton(), event)) {
+                    setMusic();
+                    drawMusicIcon();
+                    gameReference.options.saveOptions();
+                }
+
+                if (isTouched(btnNoSound.getButton(), event)) {
+                    setSound();
+                    drawSoundIcon();
+                    gameReference.options.saveOptions();
+                }
+
+                if (isTouched(btnNoVibrate.getButton(), event)) {
+                    setVibrate();
+                    drawVibrateIcon();
+                    gameReference.options.saveOptions();
+                }
                 break;
 
             case MotionEvent.ACTION_MOVE: //Any finger is moved.
@@ -123,6 +155,30 @@ public class Menu extends Scene {
             btnNoVibrate.draw(c);
         } catch (Exception e) {
             Log.i("Drawing error", e.getLocalizedMessage());
+        }
+    }
+
+    public void drawMusicIcon() {
+        if (gameReference.options.isMusicPlaying()) {
+            btnNoMusic.setIcon(musicIcons[0]);
+        } else {
+            btnNoMusic.setIcon(musicIcons[1]);
+        }
+    }
+
+    public void drawSoundIcon() {
+        if (gameReference.options.isPlaySounds()) {
+            btnNoSound.setIcon(soundIcons[0]);
+        } else {
+            btnNoSound.setIcon(soundIcons[1]);
+        }
+    }
+
+    public void drawVibrateIcon() {
+        if (gameReference.options.isVibrate()) {
+            btnNoVibrate.setIcon(vibrateIcons[0]);
+        } else {
+            btnNoVibrate.setIcon(vibrateIcons[1]);
         }
     }
 }

@@ -4,13 +4,14 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.util.Log;
 
+import com.github.jlagoscarrera.nadir.Core.NadirEngine;
 import com.github.jlagoscarrera.nadir.Scripts.RoomFiller;
 
 public class Play extends Scene {
     RoomFiller r;
 
-    public Play(Context context, int sceneId, int screenWidth, int screenHeight) {
-        super(context, sceneId, screenWidth, screenHeight);
+    public Play(NadirEngine gameReference, int sceneId, int screenWidth, int screenHeight) {
+        super(gameReference, sceneId, screenWidth, screenHeight);
 
         r = new RoomFiller();
 

@@ -4,9 +4,11 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.util.Log;
 
+import com.github.jlagoscarrera.nadir.Core.NadirEngine;
+
 public class Chest extends Scene {
-    public Chest(Context context, int sceneId, int screenWidth, int screenHeight) {
-        super(context, sceneId, screenWidth, screenHeight);
+    public Chest(NadirEngine gameReference, int sceneId, int screenWidth, int screenHeight) {
+        super(gameReference, sceneId, screenWidth, screenHeight);
     }
 
     //We refresh game physics on screen.

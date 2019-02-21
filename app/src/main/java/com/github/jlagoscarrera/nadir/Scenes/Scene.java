@@ -10,29 +10,34 @@ import android.view.MotionEvent;
 
 import com.github.jlagoscarrera.nadir.Components.MenuButton;
 import com.github.jlagoscarrera.nadir.Components.MovingBackground;
+import com.github.jlagoscarrera.nadir.Core.NadirEngine;
 import com.github.jlagoscarrera.nadirGame.R;
 
 public class Scene {
     static private int[] backgrounds = {R.mipmap.back, R.mipmap.mid, R.mipmap.front};
     static MovingBackground[] parallax;
     static boolean isParallaxCreated = false;
-    Context context;
+    NadirEngine gameReference;
     public int sceneId;
     int screenWidth, screenHeight;
+    int widthDiv, heighDiv;
     MenuButton btnBack;
 
-    public Scene(Context context, int sceneId, int screenWidth, int screenHeight) {
-        this.context = context;
+    public Scene(NadirEngine gameReference, int sceneId, int screenWidth, int screenHeight) {
+        this.gameReference = gameReference;
         this.sceneId = sceneId;
         this.screenWidth = screenWidth;
         this.screenHeight = screenHeight;
+
+        widthDiv = screenWidth / 24;
+        heighDiv = screenHeight / 12;
 
         //Parallax
         if (!isParallaxCreated) {
             isParallaxCreated = true;
             parallax = new MovingBackground[backgrounds.length];
             for (int i = 0; i < parallax.length; i++) {
-                Bitmap aux = BitmapFactory.decodeResource(context.getResources(), backgrounds[i]);
+                Bitmap aux = BitmapFactory.decodeResource(gameReference.getResources(), backgrounds[i]);
                 aux = Bitmap.createScaledBitmap(aux, screenWidth, screenHeight, true);
                 parallax[i] = new MovingBackground(aux, screenWidth, screenHeight);
             }
@@ -100,12 +105,28 @@ public class Scene {
         }
     }
 
-    public Context getContext() {
-        return context;
+    public void setMusic() {
+        gameReference.options.setMusicPlaying(!gameReference.options.isMusicPlaying());
+        gameReference.updateAudioObjects();
+        gameReference.updateMusicPlayer();
     }
 
-    public void setContext(Context context) {
-        this.context = context;
+    public void setSound() {
+        gameReference.options.setPlaySounds(!gameReference.options.isPlaySounds());
+        gameReference.updateAudioObjects();
+        gameReference.updateMusicPlayer();
+    }
+
+    public void setVibrate() {
+        gameReference.options.setVibrate(!gameReference.options.isVibrate());
+    }
+
+    public NadirEngine getGameReference() {
+        return gameReference;
+    }
+
+    public void setGameReference(NadirEngine gameReference) {
+        this.gameReference = gameReference;
     }
 
     public int getSceneId() {
