@@ -32,13 +32,15 @@ public class NadirEngine extends SurfaceView implements SurfaceHolder.Callback {
     public MediaPlayer gameMusic;
     private int volume;
     public OptionsSettings options;
+    private NadirActivity activity;
 
 
-    public NadirEngine(Context context) {
-        super(context);
+    public NadirEngine(NadirActivity activity) {
+        super(activity.getApplicationContext());
         this.surfaceHolder = getHolder();       //We obtain the holder.
         this.surfaceHolder.addCallback(this);   //We indicate where callback methods are.
-        this.context = context;                 //We obtain context.
+        this.context = activity.getApplicationContext();                 //We obtain context.
+        this.activity = activity;
         gameThread = new GameThread();          //Initialize the thread.
         options = new OptionsSettings(context);
         setFocusable(true);                     //We assure that it receives isTouched events./
@@ -66,6 +68,7 @@ public class NadirEngine extends SurfaceView implements SurfaceHolder.Callback {
                         actualScene = new Options(this, 98, screenWidth, screenHeight);
                         break;
                     case 99:
+                        activity.finishAndRemoveTask();
                         break;
                 }
             }

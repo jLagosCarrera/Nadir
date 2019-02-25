@@ -21,7 +21,6 @@ public class Scene {
     public int sceneId;
     int screenWidth, screenHeight;
     int widthDiv, heighDiv;
-    MenuButton btnBack;
 
     public Scene(NadirEngine gameReference, int sceneId, int screenWidth, int screenHeight) {
         this.gameReference = gameReference;
@@ -42,8 +41,6 @@ public class Scene {
                 parallax[i] = new MovingBackground(aux, screenWidth, screenHeight);
             }
         }
-
-        btnBack = new MenuButton((screenWidth / 24) * 22, 0, screenWidth, (screenHeight / 12) * 2);
     }
 
     public int onTouchEvent(MotionEvent event) {
@@ -56,7 +53,6 @@ public class Scene {
                 break;
             case MotionEvent.ACTION_UP:             //Last finger up.
             case MotionEvent.ACTION_POINTER_UP:     //Any finger that isnt the last up.
-                if (isTouched(btnBack.getButton(), event) && sceneId != 0) return 0;
                 break;
             case MotionEvent.ACTION_MOVE: //Any finger is moved.
                 break;
@@ -75,7 +71,7 @@ public class Scene {
     //Drawing routine, called from the game thread.
     public void draw(Canvas c) {
         try {
-            if (sceneId != 0) btnBack.draw(c);
+
         } catch (Exception e) {
             Log.i("Drawing error", e.getLocalizedMessage());
         }

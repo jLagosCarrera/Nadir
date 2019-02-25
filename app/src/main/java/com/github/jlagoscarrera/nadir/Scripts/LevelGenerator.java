@@ -66,14 +66,14 @@ public class LevelGenerator {
             int random = (int) (Math.random() * 100);
             weGoDown = false;
 
-//            //Debug for watching how it generates
-//            for (int i = 0; i < rooms.length; i++) {
-//                for (int j = 0; j < rooms[i].length; j++) {
-//                    System.out.print(rooms[i][j].getType() + " ");
-//                }
-//                System.out.println("");
-//            }
-//            System.out.println("-------");
+            //Debug for watching how it generates
+            for (int i = 0; i < rooms.length; i++) {
+                for (int j = 0; j < rooms[i].length; j++) {
+                    System.out.print(rooms[i][j].getType() + " ");
+                }
+                System.out.println("");
+            }
+            System.out.println("-------");
 
             //40% chances going left, 40% chances going right, 20% chances going down
             switch (random) {

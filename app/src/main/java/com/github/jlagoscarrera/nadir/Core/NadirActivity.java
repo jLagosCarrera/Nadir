@@ -51,4 +51,8 @@ public class NadirActivity extends AppCompatActivity {
         nadirEngine.setKeepScreenOn(true);
         setContentView(nadirEngine);
     }
+
+    public void finishApp(){
+        this.finishAndRemoveTask();
+    }
 }

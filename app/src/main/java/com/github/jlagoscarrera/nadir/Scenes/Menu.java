@@ -13,7 +13,7 @@ import com.github.jlagoscarrera.nadir.Core.NadirEngine;
 import com.github.jlagoscarrera.nadirGame.R;
 
 public class Menu extends Scene {
-    MenuButton btnPlay, btnChest, btnHiScores, btnOptions, btnExit, btnNoMusic, btnNoSound, btnNoVibrate;
+    MenuButton btnPlay, btnChest, btnHiScores, btnOptions, btnExit, btnMusic, btnSound, btnVibrate;
     MenuButton title;
     Bitmap[] musicIcons;
     Bitmap[] soundIcons;
@@ -72,15 +72,15 @@ public class Menu extends Scene {
                 BitmapFactory.decodeResource(gameReference.getResources(), R.mipmap.vibrateoff)};
 
         //No music button
-        btnNoMusic = new MenuButton(widthDiv * 19, 0, widthDiv * 20, heighDiv);
+        btnMusic = new MenuButton(widthDiv * 19, 0, widthDiv * 20, heighDiv);
         drawMusicIcon();
 
         //No sound button
-        btnNoSound = new MenuButton(widthDiv * 21, 0, widthDiv * 22, heighDiv);
+        btnSound = new MenuButton(widthDiv * 21, 0, widthDiv * 22, heighDiv);
         drawSoundIcon();
 
         //No vibrate button
-        btnNoVibrate = new MenuButton(widthDiv * 23, 0, screenWidth, heighDiv);
+        btnVibrate = new MenuButton(widthDiv * 23, 0, screenWidth, heighDiv);
         drawVibrateIcon();
     }
 
@@ -102,19 +102,19 @@ public class Menu extends Scene {
                 else if (isTouched(btnExit.getButton(), event)) return 99;
 
 
-                if (isTouched(btnNoMusic.getButton(), event)) {
+                if (isTouched(btnMusic.getButton(), event)) {
                     setMusic();
                     drawMusicIcon();
                     gameReference.options.saveOptions();
                 }
 
-                if (isTouched(btnNoSound.getButton(), event)) {
+                if (isTouched(btnSound.getButton(), event)) {
                     setSound();
                     drawSoundIcon();
                     gameReference.options.saveOptions();
                 }
 
-                if (isTouched(btnNoVibrate.getButton(), event)) {
+                if (isTouched(btnVibrate.getButton(), event)) {
                     setVibrate();
                     drawVibrateIcon();
                     gameReference.options.saveOptions();
@@ -150,9 +150,9 @@ public class Menu extends Scene {
             btnOptions.draw(c);
             btnExit.draw(c);
 
-            btnNoMusic.draw(c);
-            btnNoSound.draw(c);
-            btnNoVibrate.draw(c);
+            btnMusic.draw(c);
+            btnSound.draw(c);
+            btnVibrate.draw(c);
         } catch (Exception e) {
             Log.i("Drawing error", e.getLocalizedMessage());
         }
@@ -160,25 +160,25 @@ public class Menu extends Scene {
 
     public void drawMusicIcon() {
         if (gameReference.options.isMusicPlaying()) {
-            btnNoMusic.setIcon(musicIcons[0]);
+            btnMusic.setIcon(musicIcons[0]);
         } else {
-            btnNoMusic.setIcon(musicIcons[1]);
+            btnMusic.setIcon(musicIcons[1]);
         }
     }
 
     public void drawSoundIcon() {
         if (gameReference.options.isPlaySounds()) {
-            btnNoSound.setIcon(soundIcons[0]);
+            btnSound.setIcon(soundIcons[0]);
         } else {
-            btnNoSound.setIcon(soundIcons[1]);
+            btnSound.setIcon(soundIcons[1]);
         }
     }
 
     public void drawVibrateIcon() {
         if (gameReference.options.isVibrate()) {
-            btnNoVibrate.setIcon(vibrateIcons[0]);
+            btnVibrate.setIcon(vibrateIcons[0]);
         } else {
-            btnNoVibrate.setIcon(vibrateIcons[1]);
+            btnVibrate.setIcon(vibrateIcons[1]);
         }
     }
 }

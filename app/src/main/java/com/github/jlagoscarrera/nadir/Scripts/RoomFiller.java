@@ -6,8 +6,8 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.util.Log;
 
+import com.github.jlagoscarrera.nadir.Components.Block;
 import com.github.jlagoscarrera.nadir.Components.Room;
-import com.github.jlagoscarrera.nadir.Scripts.LevelGenerator;
 
 import java.util.ArrayList;
 
@@ -17,11 +17,12 @@ public class RoomFiller {
     ArrayList<String[]> roomType3 = new ArrayList<>();
     ArrayList<String[]> roomType0 = new ArrayList<>();
 
-    LevelGenerator level;
+    public LevelGenerator level;
 
     public RoomFiller() {
         initializeRooms();
         level = new LevelGenerator(4);
+        generateRooms();
     }
 
     public void initializeRooms() {
@@ -204,7 +205,7 @@ public class RoomFiller {
         });
     }
 
-    public void processGraphics(Canvas c) {
+    public void generateRooms() {
         for (int a = 0; a < level.getRooms().length; a++) {
             for (int b = 0; b < level.getRooms()[a].length; b++) {
                 Room r = level.getRooms()[a][b];
@@ -223,43 +224,25 @@ public class RoomFiller {
                     template = roomType0.get((int) (Math.random() * roomType0.size()));
                 }
 
+                r.setBlocks(new Block[template.length][template[0].length()]);
                 for (int i = 0; i < template.length; i++) {
                     for (int j = 0; j < template[i].length(); j++) {
-                        char block = template[i].charAt(j);
-                        int blockSize = 50;
-                        int roomHeight = 400;
-                        int roomWidth = 500;
-                        Rect blockRect = new Rect((x * roomHeight) + (j * blockSize), (y * roomWidth) + (i * blockSize),
-                                (x * roomHeight) + (j * blockSize) + blockSize, (y * roomWidth) + (i * blockSize) + blockSize);
-                        switch (block) {
+                        Block block= null ;
+                        char blockChar = template[i].charAt(j);
+                        switch (blockChar) {
                             case '0':
-                                Paint pBlock1 = new Paint();
-                                pBlock1.setColor(Color.WHITE);
-                                c.drawRect(blockRect, pBlock1);
+                                block = new Block(null, false);
                                 break;
                             case '1':
-                                Paint pBlock2 = new Paint();
-                                pBlock2.setColor(Color.BLACK);
-                                c.drawRect(blockRect, pBlock2);
+                                block = new Block(null, true);
                                 break;
                         }
+                        Block[][] aux = r.getBlocks();
+                        aux[i][j] = block;
+                        r.setBlocks(aux);
                     }
                 }
             }
-        }
-    }
-
-    //We refresh game physics on screen.
-    public void refreshPhysics() {
-
-    }
-
-    //Drawing routine, called from the game thread.
-    public void draw(Canvas c) {
-        try {
-            processGraphics(c);
-        } catch (Exception e) {
-            Log.i("Drawing error", e.getLocalizedMessage());
         }
     }
 }

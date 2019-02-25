@@ -125,6 +125,22 @@ public class MenuButton {
         this.pText = pText;
     }
 
+    public int getTextX() {
+        return textX;
+    }
+
+    public void setTextX(int textX) {
+        this.textX = textX;
+    }
+
+    public int getTextY() {
+        return textY;
+    }
+
+    public void setTextY(int textY) {
+        this.textY = textY;
+    }
+
     public void draw(Canvas c) {
         try {
             if (icon == null) {
