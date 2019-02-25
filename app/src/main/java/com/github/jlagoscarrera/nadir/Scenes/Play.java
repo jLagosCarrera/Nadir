@@ -22,7 +22,7 @@ public class Play extends Scene {
     public Play(NadirEngine gameReference, int sceneId, int screenWidth, int screenHeight) {
         super(gameReference, sceneId, screenWidth, screenHeight);
 
-        r = new RoomFiller();
+        r = new RoomFiller(gameReference);
 
         blockHeigth = screenHeight / 8;
         blockWidth = blockHeigth;
@@ -66,27 +66,32 @@ public class Play extends Scene {
     public void draw(Canvas c) {
         try {
             c.drawColor(Color.RED);
-            btnBack.draw(c);
 
-            Rect blockRect = null;
-            for (int i = 0; i < r.level.getRooms().length; i++) {
-                for (int j = 0; j < r.level.getRooms()[i].length; j++) {
-                    blockY = i*blockHeigth*8;
-                    for (int k = 0; k < r.level.getRooms()[i][j].getBlocks().length; k++) {
-                        blockX = j*blockWidth*10;
-                        for (int l = 0; l < r.level.getRooms()[i][j].getBlocks()[k].length; l++) {
-                            blockRect = new Rect(blockX, blockY, blockX + blockWidth, blockY + blockHeigth);
-                            if (r.level.getRooms()[i][j].getBlocks()[k][l].isCollisionable()){
-                                c.drawRect(blockRect, btnBack.getpButton());
+
+            if (r.isGenerated) {
+                Rect blockRect = null;
+                for (int i = 0; i < r.level.getRooms().length; i++) {
+                    for (int j = 0; j < r.level.getRooms()[i].length; j++) {
+                        blockY = i * blockHeigth * 8;
+                        for (int k = 0; k < r.level.getRooms()[i][j].getBlocks().length; k++) {
+                            blockX = j * blockWidth * 10;
+                            for (int l = 0; l < r.level.getRooms()[i][j].getBlocks()[k].length; l++) {
+                                blockRect = new Rect(blockX, blockY, blockX + blockWidth, blockY + blockHeigth);
+                                if (r.level.getRooms()[i][j].getBlocks()[k][l].isCollisionable()) {
+                                    c.drawBitmap(r.level.getRooms()[i][j].getBlocks()[k][l].getTile(), null, blockRect, null);
+                                }
+                                blockX += blockWidth;
                             }
-                            blockX+=blockWidth;
+                            blockY += blockHeigth;
                         }
-                        blockY+=blockHeigth;
                     }
                 }
             }
+
+            btnBack.draw(c);
         } catch (Exception e) {
             Log.i("Drawing error", e.getLocalizedMessage());
+            r.generateRooms();
         }
     }
 }

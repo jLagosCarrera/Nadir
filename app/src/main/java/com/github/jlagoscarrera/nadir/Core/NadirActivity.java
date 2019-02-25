@@ -52,6 +52,11 @@ public class NadirActivity extends AppCompatActivity {
         setContentView(nadirEngine);
     }
 
+    @Override
+    public void onBackPressed() {
+
+    }
+
     public void finishApp(){
         this.finishAndRemoveTask();
     }

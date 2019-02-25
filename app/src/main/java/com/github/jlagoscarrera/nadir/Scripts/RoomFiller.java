@@ -1,5 +1,6 @@
 package com.github.jlagoscarrera.nadir.Scripts;
 
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -8,6 +9,8 @@ import android.util.Log;
 
 import com.github.jlagoscarrera.nadir.Components.Block;
 import com.github.jlagoscarrera.nadir.Components.Room;
+import com.github.jlagoscarrera.nadir.Core.NadirEngine;
+import com.github.jlagoscarrera.nadirGame.R;
 
 import java.util.ArrayList;
 
@@ -17,9 +20,13 @@ public class RoomFiller {
     ArrayList<String[]> roomType3 = new ArrayList<>();
     ArrayList<String[]> roomType0 = new ArrayList<>();
 
+    public boolean isGenerated;
     public LevelGenerator level;
+    private NadirEngine gameReference;
 
-    public RoomFiller() {
+    public RoomFiller(NadirEngine gameReference) {
+        this.gameReference = gameReference;
+        isGenerated = false;
         initializeRooms();
         level = new LevelGenerator(4);
         generateRooms();
@@ -234,7 +241,7 @@ public class RoomFiller {
                                 block = new Block(null, false);
                                 break;
                             case '1':
-                                block = new Block(null, true);
+                                block = new Block(BitmapFactory.decodeResource(gameReference.getResources(), R.mipmap.block),true);
                                 break;
                         }
                         Block[][] aux = r.getBlocks();
@@ -244,5 +251,7 @@ public class RoomFiller {
                 }
             }
         }
+
+        isGenerated = true;
     }
 }
