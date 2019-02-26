@@ -87,7 +87,7 @@ public class RoomFiller {
 
         //Type 2 rooms
         roomType2.add(new String[]{
-                "0000000000",
+                "1100000011",
                 "0000000000",
                 "0000000000",
                 "0011000000",
@@ -97,7 +97,7 @@ public class RoomFiller {
                 "1111100011"
         });
         roomType2.add(new String[]{
-                "0000111100",
+                "1100000011",
                 "0000000000",
                 "1110001000",
                 "0000001100",
@@ -107,7 +107,7 @@ public class RoomFiller {
                 "1111100111"
         });
         roomType2.add(new String[]{
-                "1111111111",
+                "1100000011",
                 "1000000001",
                 "1000000111",
                 "0011110000",
@@ -117,7 +117,7 @@ public class RoomFiller {
                 "1111001111"
         });
         roomType2.add(new String[]{
-                "1111111111",
+                "1100000011",
                 "1000000001",
                 "1000000001",
                 "0001111000",
@@ -127,7 +127,7 @@ public class RoomFiller {
                 "1001111001"
         });
         roomType2.add(new String[]{
-                "1111111111",
+                "1100000011",
                 "1111000001",
                 "1100000001",
                 "0000001000",
@@ -200,16 +200,6 @@ public class RoomFiller {
                 "1111111111",
                 "1111111111"
         });
-        roomType0.add(new String[]{
-                "1111111111",
-                "1111111111",
-                "1110000111",
-                "1110000111",
-                "1110000111",
-                "1110000111",
-                "1111111111",
-                "1111111111"
-        });
     }
 
     public void generateRooms() {
@@ -217,9 +207,6 @@ public class RoomFiller {
             for (int b = 0; b < level.getRooms()[a].length; b++) {
                 Room r = level.getRooms()[a][b];
                 String[] template;
-                int x, y;
-                x = r.getX();
-                y = r.getY();
 
                 if (r.getType() == 1) {
                     template = roomType1.get((int) (Math.random() * roomType1.size()));
@@ -231,27 +218,24 @@ public class RoomFiller {
                     template = roomType0.get((int) (Math.random() * roomType0.size()));
                 }
 
-                r.setBlocks(new Block[template.length][template[0].length()]);
+                r.blocks = new Block[template.length][template[0].length()];
                 for (int i = 0; i < template.length; i++) {
                     for (int j = 0; j < template[i].length(); j++) {
-                        Block block= null ;
+                        Block block;
                         char blockChar = template[i].charAt(j);
                         switch (blockChar) {
-                            case '0':
-                                block = new Block(null, false);
-                                break;
                             case '1':
-                                block = new Block(BitmapFactory.decodeResource(gameReference.getResources(), R.mipmap.block),true);
+                                block = new Block(BitmapFactory.decodeResource(gameReference.getResources(), R.mipmap.block), true, '1');
+                                break;
+                            default:
+                                block = new Block(null, false, '0');
                                 break;
                         }
-                        Block[][] aux = r.getBlocks();
-                        aux[i][j] = block;
-                        r.setBlocks(aux);
+                        r.blocks[i][j] = block;
                     }
                 }
             }
         }
-
         isGenerated = true;
     }
 }

@@ -2,7 +2,7 @@ package com.github.jlagoscarrera.nadir.Components;
 
 public class Room {
 
-    private Block[][] blocks;
+    public Block[][] blocks;
     private int type;
     private int id;
     private int x;
@@ -45,13 +45,5 @@ public class Room {
 
     public void setY(int y) {
         this.y = y;
-    }
-
-    public Block[][] getBlocks() {
-        return blocks;
-    }
-
-    public void setBlocks(Block[][] blocks) {
-        this.blocks = blocks;
     }
 }

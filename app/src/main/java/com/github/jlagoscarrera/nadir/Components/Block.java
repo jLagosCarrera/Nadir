@@ -5,14 +5,12 @@ import android.graphics.Bitmap;
 public class Block {
     Bitmap tile;
     boolean collisionable;
+    char blockType;
 
-    public Block(){
-
-    }
-
-    public Block(Bitmap tile, boolean collisionable) {
+    public Block(Bitmap tile, boolean collisionable, char blockType) {
         this.tile = tile;
         this.collisionable = collisionable;
+        this.blockType = blockType;
     }
 
     public Bitmap getTile() {
@@ -25,6 +23,14 @@ public class Block {
 
     public boolean isCollisionable() {
         return collisionable;
+    }
+
+    public char getBlockType() {
+        return blockType;
+    }
+
+    public void setBlockType(char blockType) {
+        this.blockType = blockType;
     }
 
     public void setCollisionable(boolean collisionable) {

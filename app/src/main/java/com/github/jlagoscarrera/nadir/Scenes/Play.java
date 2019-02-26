@@ -8,6 +8,7 @@ import android.graphics.Rect;
 import android.util.Log;
 import android.view.MotionEvent;
 
+import com.github.jlagoscarrera.nadir.Components.Block;
 import com.github.jlagoscarrera.nadir.Components.MenuButton;
 import com.github.jlagoscarrera.nadir.Core.NadirEngine;
 import com.github.jlagoscarrera.nadir.Scripts.RoomFiller;
@@ -67,19 +68,27 @@ public class Play extends Scene {
         try {
             c.drawColor(Color.RED);
 
-
+            c.save();
+            c.translate(-r.level.getStartRoom().getX() * blockWidth * 8, -r.level.getStartRoom().getY() * blockHeigth * 8);
             if (r.isGenerated) {
                 Rect blockRect = null;
                 for (int i = 0; i < r.level.getRooms().length; i++) {
                     for (int j = 0; j < r.level.getRooms()[i].length; j++) {
                         blockY = i * blockHeigth * 8;
-                        for (int k = 0; k < r.level.getRooms()[i][j].getBlocks().length; k++) {
+                        for (int k = 0; k < r.level.getRooms()[i][j].blocks.length; k++) {
                             blockX = j * blockWidth * 10;
-                            for (int l = 0; l < r.level.getRooms()[i][j].getBlocks()[k].length; l++) {
+                            for (int l = 0; l < r.level.getRooms()[i][j].blocks[k].length; l++) {
                                 blockRect = new Rect(blockX, blockY, blockX + blockWidth, blockY + blockHeigth);
-                                if (r.level.getRooms()[i][j].getBlocks()[k][l].isCollisionable()) {
-                                    c.drawBitmap(r.level.getRooms()[i][j].getBlocks()[k][l].getTile(), null, blockRect, null);
+
+                                if (r.level.getRooms()[i][j].blocks[k][l] == null) {
+                                    r.level.getRooms()[i][j].blocks[k][l] = new Block(null, false, '0');
+                                } else {
+                                    if (r.level.getRooms()[i][j].blocks[k][l].isCollisionable())
+                                        c.drawBitmap(r.level.getRooms()[i][j].blocks[k][l].getTile(), null, blockRect, null);
+//                                    Log.i("bloque ->", "NULOOOOO!!");
+//                                    Log.i("dibujando -> ", "i:" + i + ", j:" + j + ", k:" + k + ", l:" + l);
                                 }
+
                                 blockX += blockWidth;
                             }
                             blockY += blockHeigth;
@@ -87,11 +96,12 @@ public class Play extends Scene {
                     }
                 }
             }
+            c.restore();
 
             btnBack.draw(c);
         } catch (Exception e) {
             Log.i("Drawing error", e.getLocalizedMessage());
-            r.generateRooms();
+            e.printStackTrace();
         }
     }
 }
