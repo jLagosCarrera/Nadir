@@ -3,8 +3,7 @@ package com.github.jlagoscarrera.nadir.Scripts;
 import com.github.jlagoscarrera.nadir.Components.Room;
 
 public class LevelGenerator {
-
-    private int levelSize = 4;
+    private int levelSize;
     private Room[][] rooms;
     private Room startRoom;
     private Room endRoom;
@@ -47,6 +46,16 @@ public class LevelGenerator {
         }
     }
 
+
+    public void showPath() {
+        for (int i = 0; i < rooms.length; i++) {
+            for (int j = 0; j < rooms[i].length; j++) {
+                System.out.print(rooms[i][j].getType() + " ");
+            }
+            System.out.println("");
+        }
+    }
+
     /**
      * Generates the solution path.
      */
@@ -66,14 +75,8 @@ public class LevelGenerator {
             int random = (int) (Math.random() * 100);
             weGoDown = false;
 
-//            //Debug for watching how it generates
-//            for (int i = 0; i < rooms.length; i++) {
-//                for (int j = 0; j < rooms[i].length; j++) {
-//                    System.out.print(rooms[i][j].getType() + " ");
-//                }
-//                System.out.println("");
-//            }
-//            System.out.println("-------");
+            //showPath();
+            //System.out.println("-------");
 
             //40% chances going left, 40% chances going right, 20% chances going down
             switch (random) {

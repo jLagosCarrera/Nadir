@@ -10,10 +10,10 @@ import com.github.jlagoscarrera.nadir.Components.MenuButton;
 import com.github.jlagoscarrera.nadir.Core.NadirEngine;
 import com.github.jlagoscarrera.nadirGame.R;
 
-public class Chest extends Scene {
+public class Tutorial extends Scene {
     MenuButton btnBack;
 
-    public Chest(NadirEngine gameReference, int sceneId, int screenWidth, int screenHeight) {
+    public Tutorial(NadirEngine gameReference, int sceneId, int screenWidth, int screenHeight) {
         super(gameReference, sceneId, screenWidth, screenHeight);
 
         //Btn Back

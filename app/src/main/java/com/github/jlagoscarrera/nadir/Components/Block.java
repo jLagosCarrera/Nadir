@@ -1,11 +1,13 @@
 package com.github.jlagoscarrera.nadir.Components;
 
 import android.graphics.Bitmap;
+import android.graphics.Rect;
 
 public class Block {
     Bitmap tile;
     boolean collisionable;
     char blockType;
+    Rect blockRect;
 
     public Block(Bitmap tile, boolean collisionable, char blockType) {
         this.tile = tile;
@@ -35,5 +37,13 @@ public class Block {
 
     public void setCollisionable(boolean collisionable) {
         this.collisionable = collisionable;
+    }
+
+    public Rect getBlockRect() {
+        return blockRect;
+    }
+
+    public void setBlockRect(Rect blockRect) {
+        this.blockRect = blockRect;
     }
 }

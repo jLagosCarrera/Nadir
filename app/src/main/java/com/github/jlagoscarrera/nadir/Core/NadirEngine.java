@@ -9,7 +9,7 @@ import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
-import com.github.jlagoscarrera.nadir.Scenes.Chest;
+import com.github.jlagoscarrera.nadir.Scenes.Tutorial;
 import com.github.jlagoscarrera.nadir.Scenes.HiScores;
 import com.github.jlagoscarrera.nadir.Scenes.Menu;
 import com.github.jlagoscarrera.nadir.Scenes.Options;
@@ -59,7 +59,7 @@ public class NadirEngine extends SurfaceView implements SurfaceHolder.Callback {
                         actualScene = new Play(this, 1, screenWidth, screenHeight);
                         break;
                     case 96:
-                        actualScene = new Chest(this, 1, screenWidth, screenHeight);
+                        actualScene = new Tutorial(this, 1, screenWidth, screenHeight);
                         break;
                     case 97:
                         actualScene = new HiScores(this, 1, screenWidth, screenHeight);

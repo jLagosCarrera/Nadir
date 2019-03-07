@@ -13,7 +13,7 @@ import com.github.jlagoscarrera.nadir.Core.NadirEngine;
 import com.github.jlagoscarrera.nadirGame.R;
 
 public class Menu extends Scene {
-    MenuButton btnPlay, btnChest, btnHiScores, btnOptions, btnExit, btnMusic, btnSound, btnVibrate;
+    MenuButton btnPlay, btnTutorial, btnHiScores, btnOptions, btnExit, btnMusic, btnSound, btnVibrate;
     MenuButton title;
     Bitmap[] musicIcons;
     Bitmap[] soundIcons;
@@ -36,11 +36,11 @@ public class Menu extends Scene {
         btnPlay.getpText().setTypeface(Typeface.createFromAsset(gameReference.getContext().getAssets(), "font/Poiretone.ttf"));
         btnPlay.setText("Play");
 
-        //Chest, skins... button
-        btnChest = new MenuButton(widthDiv, heighDiv * 6, widthDiv * 11, heighDiv * 8);
-        btnChest.getpText().setTextSize((int) (heighDiv * 2 * 0.75));
-        btnChest.getpText().setTypeface(Typeface.createFromAsset(gameReference.getContext().getAssets(), "font/Poiretone.ttf"));
-        btnChest.setText("Chest");
+        //Tutorial, skins... button
+        btnTutorial = new MenuButton(widthDiv, heighDiv * 6, widthDiv * 11, heighDiv * 8);
+        btnTutorial.getpText().setTextSize((int) (heighDiv * 2 * 0.75));
+        btnTutorial.getpText().setTypeface(Typeface.createFromAsset(gameReference.getContext().getAssets(), "font/Poiretone.ttf"));
+        btnTutorial.setText("Tutorial");
 
         //High Scores button
         btnHiScores = new MenuButton(widthDiv * 13, heighDiv * 6, widthDiv * 23, heighDiv * 8);
@@ -96,7 +96,7 @@ public class Menu extends Scene {
             case MotionEvent.ACTION_POINTER_UP:     //Any finger that isnt the last up.
                 //Touches en el menu
                 if (isTouched(btnPlay.getButton(), event)) return 1;
-                else if (isTouched(btnChest.getButton(), event)) return 96;
+                else if (isTouched(btnTutorial.getButton(), event)) return 96;
                 else if (isTouched(btnHiScores.getButton(), event)) return 97;
                 else if (isTouched(btnOptions.getButton(), event)) return 98;
                 else if (isTouched(btnExit.getButton(), event)) return 99;
@@ -145,7 +145,7 @@ public class Menu extends Scene {
             title.draw(c);
 
             btnPlay.draw(c);
-            btnChest.draw(c);
+            btnTutorial.draw(c);
             btnHiScores.draw(c);
             btnOptions.draw(c);
             btnExit.draw(c);
