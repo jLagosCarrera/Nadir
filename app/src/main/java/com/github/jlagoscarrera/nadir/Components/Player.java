@@ -63,7 +63,7 @@ public class Player extends Character {
     }
 
     public void moveRight() {
-        Rect auxRect = new Rect(x + velX, y, x + velX + playRef.blockWidth, y + playRef.blockHeigth);
+        Rect auxRect = new Rect(x + velX, y, x + velX + playRef.blockWidth - 5, y + playRef.blockHeigth - 5);
         if (!checkIntersect(auxRect)) {
             int aux = container.width();
 
@@ -86,7 +86,7 @@ public class Player extends Character {
     }
 
     public void moveLeft() {
-        Rect auxRect = new Rect(x - velX, y, x - velX + playRef.blockWidth, y + playRef.blockHeigth);
+        Rect auxRect = new Rect(x - velX, y, x - velX + playRef.blockWidth - 5, y + playRef.blockHeigth - 5);
         if (!checkIntersect(auxRect)) {
             int aux = container.width();
 
@@ -121,7 +121,7 @@ public class Player extends Character {
             velY = playerGravity;
         }
 
-        Rect auxRect = new Rect(x, y + velY, x + playRef.blockWidth, y + velY + playRef.blockHeigth);
+        Rect auxRect = new Rect(x, y + velY, x + playRef.blockWidth - 5, y + velY + playRef.blockHeigth - 5);
         if (!checkIntersect(auxRect)) {
             int aux = container.height();
 
@@ -129,23 +129,21 @@ public class Player extends Character {
                 container.top = cameraHandler.top;
                 container.bottom = cameraHandler.top + aux;
                 offSetY -= cameraHandler.top - container.top + velY;
-            }
-            if (container.top + velY == cameraHandler.top) {
+                //offSetY -= velY - (container.top - cameraHandler.top);
+            } else if (container.top + velY == cameraHandler.top) {
                 container.top = cameraHandler.top;
                 container.bottom = cameraHandler.top + aux;
-            }
-            if (container.top + velY > cameraHandler.top && container.bottom + velY < cameraHandler.bottom) {
+            } else if (container.top + velY > cameraHandler.top && container.bottom + velY < cameraHandler.bottom) {
                 container.bottom += velY;
                 container.top += velY;
-            }
-            if (container.bottom + velY == cameraHandler.bottom) {
+            } else if (container.bottom + velY == cameraHandler.bottom) {
                 container.bottom = cameraHandler.bottom;
                 container.top = cameraHandler.bottom - aux;
-            }
-            if (container.bottom + velY > cameraHandler.bottom) {
+            } else if (container.bottom + velY > cameraHandler.bottom) {
                 container.bottom = cameraHandler.bottom;
                 container.top = cameraHandler.bottom - aux;
                 offSetY -= container.bottom + velY - cameraHandler.bottom;
+                //offSetY -= velY - (cameraHandler.bottom - container.bottom);
             }
 
             y += velY;

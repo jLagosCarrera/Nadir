@@ -78,13 +78,13 @@ public class Play extends Scene {
         Rect cameraHandler = new Rect((screenWidth / 12) * 4, (screenHeight / 6) * 2,
                 (screenWidth / 12) * 8, (screenHeight / 6) * 4);
         player = new Player(6, blockHeigth / 8,
-                (r.level.getStartRoom().getX() * blockWidth * 8) + ((screenWidth / 12) * 4) + ((cameraHandler.width() / 2) - (blockWidth / 2)),
-                ((screenHeight / 6) * 2) + (cameraHandler.height() - blockHeigth),
+                (r.level.getStartRoom().getX() * blockWidth * 8) + ((screenWidth / 12) * 4) + ((cameraHandler.width() / 2) - (blockWidth / 2)) + 5,
+                ((screenHeight / 6) * 2) + (cameraHandler.height() - blockHeigth) + 5,
                 BitmapFactory.decodeResource(gameReference.getResources(), R.mipmap.player_run_1),
-                new Rect(cameraHandler.centerX() - (blockWidth / 2),
-                        cameraHandler.bottom - blockHeigth,
-                        cameraHandler.centerX() + (blockWidth / 2),
-                        cameraHandler.bottom),
+                new Rect(cameraHandler.centerX() - (blockWidth / 2) + 5,
+                        cameraHandler.bottom - blockHeigth + 5,
+                        cameraHandler.centerX() + (blockWidth / 2) - 5,
+                        cameraHandler.bottom - 5),
                 cameraHandler, this);
 
         jumping = false;

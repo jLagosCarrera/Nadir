@@ -56,8 +56,4 @@ public class NadirActivity extends AppCompatActivity {
     public void onBackPressed() {
 
     }
-
-    public void finishApp(){
-        this.finishAndRemoveTask();
-    }
 }
