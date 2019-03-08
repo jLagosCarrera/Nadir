@@ -14,12 +14,38 @@ import com.github.jlagoscarrera.nadir.Components.MenuButton;
 import com.github.jlagoscarrera.nadir.Core.NadirEngine;
 import com.github.jlagoscarrera.nadirGame.R;
 
+/**
+ * The options scene.
+ */
 public class Options extends Scene {
-    MenuButton btnMusic, btnSound, btnVibrate;
+    /**
+     * The music toggle button.
+     */
+    MenuButton btnMusic, /**
+     * The sound toggle button.
+     */
+    btnSound, /**
+     * The vibrate toggle button.
+     */
+    btnVibrate;
+    /**
+     * The Title of the scene.
+     */
     MenuButton title;
 
+    /**
+     * The back to menu button.
+     */
     MenuButton btnBack;
 
+    /**
+     * Instantiates a new options scene.
+     *
+     * @param gameReference the game engine reference
+     * @param sceneId       the current scene id
+     * @param screenWidth   the screen width
+     * @param screenHeight  the screen height
+     */
     public Options(NadirEngine gameReference, int sceneId, int screenWidth, int screenHeight) {
         super(gameReference, sceneId, screenWidth, screenHeight);
 
@@ -54,6 +80,12 @@ public class Options extends Scene {
         btnBack.setIcon(BitmapFactory.decodeResource(gameReference.getResources(), R.mipmap.backarrow));
     }
 
+    /**
+     * Handles touches on the screen.
+     *
+     * @param event asociated event to the touch
+     * @return the new scene ID
+     */
     public int onTouchEvent(MotionEvent event) {
         int pointerIndex = event.getActionIndex();        //Obtain action index.
         int pointerID = event.getPointerId(pointerIndex); //Obtain id of the pointer asociated to the action.
@@ -88,11 +120,19 @@ public class Options extends Scene {
         return sceneId;
     }
 
+    /**
+     * Refresh parallax on screen.
+     */
     //We refresh game physics on screen.
     public void refreshPhysics() {
         refreshParallax();
     }
 
+    /**
+     * Draw on canvas.
+     *
+     * @param c the canvas to draw at
+     */
     //Drawing routine, called from the game thread.
     public void draw(Canvas c) {
         try {

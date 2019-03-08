@@ -22,7 +22,7 @@ import com.github.jlagoscarrera.nadir.Scripts.RoomFiller;
 import com.github.jlagoscarrera.nadirGame.R;
 
 /**
- * The type Play.
+ * The play scene.
  */
 public class Play extends Scene implements SensorEventListener {
     /**
@@ -30,94 +30,118 @@ public class Play extends Scene implements SensorEventListener {
      */
     SensorManager sensorManager;
     /**
-     * The Acelerometro.
+     * The Accelerometer sensor.
      */
     Sensor acelerometro;
+    /**
+     * The Proximity sensor.
+     */
     Sensor proximidad;
     /**
-     * The R.
+     * The RoomFiller generator reference.
      */
     public RoomFiller r;
     /**
-     * The Btn back.
+     * The back to menu button.
      */
     MenuButton btnBack;
     /**
-     * The Btn left.
+     * The move left button.
      */
     MenuButton btnLeft,
     /**
-     * The Btn right.
+     * The move right button.
      */
     btnRight;
     /**
-     * The Btn jump.
+     * The jump button.
      */
     MenuButton btnJump;
     /**
      * The Block heigth.
      */
-    public int blockHeigth,
+    public int blockHeigth;
     /**
      * The Block width.
      */
-    blockWidth;
+    public int blockWidth;
     /**
-     * The Block x.
+     * The Block top x position.
      */
     int blockX,
     /**
-     * The Block y.
+     * The Block left y position.
      */
     blockY;
     /**
-     * The Player.
+     * The Player object.
      */
     Player player;
     /**
-     * The Moving left.
+     * Indicates if player is moving left.
      */
-    boolean movingLeft,
+    boolean movingLeft;
     /**
-     * The Moving right.
+     * Indicates if player is moving right.
      */
-    movingRight,
+    boolean movingRight;
     /**
-     * The Player is on end.
+     * Indicates if player is on end room.
      */
-    playerIsOnEnd;
+    boolean playerIsOnEnd;
     /**
-     * The Jumping.
+     * Indicates if player is jumping.
      */
-    public boolean jumping,
+    public boolean jumping;
     /**
-     * The Falling.
+     * Indicates if player is falling.
      */
-    falling;
+    public boolean falling;
     /**
      * The End room.
      */
     Rect endRoom;
     /**
-     * The End paint.
+     * The paint to indicate we are on last room.
      */
     Paint endPaint;
 
+    /**
+     * The Current background bitmap.
+     */
     Bitmap currentBackground;
+    /**
+     * The Night background bitmap.
+     */
     Bitmap nightBackground;
+    /**
+     * The Day background bitmap
+     */
     Bitmap dayBackground;
 
+    /**
+     * The Current block bitmap.
+     */
     Bitmap currentBlock;
+    /**
+     * The Night block bitmap.
+     */
     Bitmap nightBlock;
+    /**
+     * The Day block bitmap.
+     */
     Bitmap dayBlock;
 
+    /**
+     * The Game engine reference.
+     */
     NadirEngine gameReference;
 
     /**
-     * Instantiates a new Play.
+     * Instantiates a new play scene.
      *
-     * @param gameReference the game reference
-     * @param sceneId       the scene id
+     * @param gameReference the game engine reference
+     * @param sceneId       the current scene id
      * @param screenWidth   the screen width
      * @param screenHeight  the screen height
      */
@@ -228,6 +252,12 @@ public class Play extends Scene implements SensorEventListener {
 
     }
 
+    /**
+     * Handles touches on the screen.
+     *
+     * @param event asociated event to the touch
+     * @return the new scene ID
+     */
     public int onTouchEvent(MotionEvent event) {
         int pointerIndex = event.getActionIndex();        //Obtain action index.
         int pointerID = event.getPointerId(pointerIndex); //Obtain id of the pointer asociated to the action.
@@ -267,9 +297,18 @@ public class Play extends Scene implements SensorEventListener {
         return sceneId;
     }
 
-    int soundID;
-    boolean alreadyPlaying = false;
+    /**
+     * The movement sound playing id.
+     */
+    int soundMoveID;
+    /**
+     * Indicates if the movement sound is already playing.
+     */
+    boolean alreadyPlayingMoveSoung = false;
 
+    /**
+     * Applies gravity and moves on X axis, also, it plays sounds for jump and movement.
+     */
     //We refresh game physics on screen.
     public void refreshPhysics() {
         player.aplicarGravedad();
@@ -287,15 +326,15 @@ public class Play extends Scene implements SensorEventListener {
             player.moveRight();
         }
         if (movingLeft || movingRight) {
-            if (!alreadyPlaying) {
-                soundID = gameReference.effects.play(gameReference.moveSound,
+            if (!alreadyPlayingMoveSoung) {
+                soundMoveID = gameReference.effects.play(gameReference.moveSound,
                         gameReference.volume, gameReference.volume,
                         1, -1, 1);
-                alreadyPlaying = true;
+                alreadyPlayingMoveSoung = true;
             }
         } else {
-            gameReference.effects.stop(soundID);
-            alreadyPlaying = false;
+            gameReference.effects.stop(soundMoveID);
+            alreadyPlayingMoveSoung = false;
         }
 
         if (endRoom.contains(player.getX(), player.getY())) {
@@ -305,6 +344,11 @@ public class Play extends Scene implements SensorEventListener {
         }
     }
 
+    /**
+     * Draw on canvas.
+     *
+     * @param c the canvas to draw at
+     */
     //Drawing routine, called from the game thread.
     public void draw(Canvas c) {
         try {
@@ -355,10 +399,24 @@ public class Play extends Scene implements SensorEventListener {
         }
     }
 
+    /**
+     * Last update time for accelerometer.
+     */
     private long lastMilisUpdate = 0;
+    /**
+     * Last position x/y/z for accelerometer.
+     */
     private float last_x, last_y, last_z;
-    private static final int SENSIBILITY = 300;
+    /**
+     * Accelerometer sensibility for shaking.
+     */
+    private static final int SENSIBILITY = 400;
 
+    /**
+     * Changes on any sensor.
+     *
+     * @param event event of the sensor that contains all info
+     */
     @Override
     public void onSensorChanged(SensorEvent event) {
         synchronized (this) {
@@ -399,6 +457,12 @@ public class Play extends Scene implements SensorEventListener {
         }
     }
 
+    /**
+     * Accuracy changed on a sensor.
+     *
+     * @param sensor the sensor that changed accuracy
+     * @param accuracy accuracy change
+     */
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
 

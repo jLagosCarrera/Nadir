@@ -21,25 +21,82 @@ import com.github.jlagoscarrera.nadirGame.R;
 
 import java.io.IOException;
 
+/**
+ * The game engine.
+ */
 public class NadirEngine extends SurfaceView implements SurfaceHolder.Callback {
+    /**
+     * Abstract interface for handling drawing surface.
+     */
     private SurfaceHolder surfaceHolder;    //Abstract interface for handling drawing surface.
+    /**
+     * Application context.
+     */
     private Context context;                //Application context.
 
+    /**
+     * Screen Width, its value its refreshed onSurfaceChanged.
+     */
     private int screenWidth = 1;            //Screen Width, its value its refreshed onSurfaceChanged.
+    /**
+     * Screen Height, its value its refreshed onSurfaceChanged.
+     */
     private int screenHeight = 1;           //Screen Height, its value its refreshed onSurfaceChanged.
+    /**
+     * Thread that handles drawing and physics.
+     */
     private GameThread gameThread;          //Thread that handles drawing and physics.
+    /**
+     * Thread running control flag.
+     */
     private boolean running = false;        //Thread control.
+    /**
+     * Actual game scene
+     */
     private Scene actualScene;
+    /**
+     * Audio manager
+     */
     private AudioManager audioManager;
+    /**
+     * The SoundPool of sounds that can be played.
+     */
     public SoundPool effects;
-    public int jumpSound, moveSound;
+    /**
+     * The Jump sound.
+     */
+    public int jumpSound;
+    /**
+     * The Move sound.
+     */
+    public int moveSound;
+    /**
+     * Maximum simultaneous sounds
+     */
     final private int maxSimultaneousSounds = 10;
+    /**
+     * The game music.
+     */
     public MediaPlayer gameMusic;
+    /**
+     * The current volume.
+     */
     public int volume;
+    /**
+     * The options class.
+     */
     public OptionsSettings options;
+    /**
+     * The game activity.
+     */
     public static NadirActivity activity;
 
 
+    /**
+     * Instantiates a new game engine.
+     *
+     * @param activity the game activity
+     */
     public NadirEngine(NadirActivity activity) {
         super(activity.getApplicationContext());
         this.surfaceHolder = getHolder();       //We obtain the holder.
@@ -64,6 +121,12 @@ public class NadirEngine extends SurfaceView implements SurfaceHolder.Callback {
         setFocusable(true);                     //We assure that it receives isTouched events./
     }
 
+    /**
+     * Instantiates new scenes depending on received sceneID on screen touch.
+     *
+     * @param event event asociated to the touch
+     * @return indicates if it has to call super(?)
+     */
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         synchronized (surfaceHolder) {
@@ -97,6 +160,11 @@ public class NadirEngine extends SurfaceView implements SurfaceHolder.Callback {
         return true;
     }
 
+    /**
+     * New surface created.
+     *
+     * @param holder surface holder
+     */
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
         options.loadOptions();
@@ -106,6 +174,14 @@ public class NadirEngine extends SurfaceView implements SurfaceHolder.Callback {
         updateMusicPlayer();
     }
 
+    /**
+     * Surface dimensions changed.
+     *
+     * @param holder surface holder
+     * @param format
+     * @param width  new screen width
+     * @param height new screen height
+     */
     @Override
     public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
         screenWidth = width;    //New screen width is set.
@@ -133,6 +209,11 @@ public class NadirEngine extends SurfaceView implements SurfaceHolder.Callback {
         gameThread.setSurfaceSize(width, height);   //We stablish new screen size on the gameThread.
     }
 
+    /**
+     * Surface destroyed.
+     *
+     * @param holder surface holder
+     */
     @Override
     public void surfaceDestroyed(SurfaceHolder holder) {
         gameThread.setWorking(false);   //We stop game thread.
@@ -145,6 +226,9 @@ public class NadirEngine extends SurfaceView implements SurfaceHolder.Callback {
         }
     }
 
+    /**
+     * Update audio objects.
+     */
     public void updateAudioObjects() {
         if (audioManager == null) {
             audioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
@@ -161,6 +245,9 @@ public class NadirEngine extends SurfaceView implements SurfaceHolder.Callback {
         }
     }
 
+    /**
+     * Update volume.
+     */
     public void updateVolume() {
         if (audioManager != null)
             volume = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
@@ -168,6 +255,9 @@ public class NadirEngine extends SurfaceView implements SurfaceHolder.Callback {
             gameMusic.setVolume(volume / 2, volume / 2);
     }
 
+    /**
+     * Update music player.
+     */
     public void updateMusicPlayer() {
         if (!gameMusic.isPlaying() && options.isMusicPlaying()) {
             try {
@@ -181,6 +271,9 @@ public class NadirEngine extends SurfaceView implements SurfaceHolder.Callback {
         }
     }
 
+    /**
+     * Stop sounds.
+     */
     public void stopSounds() {
         if (gameMusic != null) {
             gameMusic.stop();
@@ -190,13 +283,20 @@ public class NadirEngine extends SurfaceView implements SurfaceHolder.Callback {
         audioManager = null;
     }
 
-    //GameThread class in which we implement drawing and physics methods
-    //for running paralell with the user interface.
+    /**
+     * The game thread in which we implement drawing and physics methods for running paralell with the user interface.
+     */
     class GameThread extends Thread {
+        /**
+         * Instantiates a new game thread.
+         */
         public GameThread() {
 
         }
 
+        /**
+         * Function executed on the thread.
+         */
         @Override
         public void run() {
             long sleepTime;
@@ -235,14 +335,23 @@ public class NadirEngine extends SurfaceView implements SurfaceHolder.Callback {
             }
         }
 
-        //Activates or deactivates GameThread running or not.
+        /**
+         * Sets game running or not.
+         *
+         * @param flag the flag
+         */
         void setWorking(boolean flag) {
             running = flag;
         }
 
-        //Function called if screen size or orientation changes.
+        /**
+         * Function called if screen size or orientation changes.
+         *
+         * @param width  the new width
+         * @param height the new height
+         */
         public void setSurfaceSize(int width, int height) {
-            synchronized (surfaceHolder) {  // Its recomendated to do it atomically.
+            synchronized (surfaceHolder) {
 
             }
         }

@@ -12,13 +12,67 @@ import com.github.jlagoscarrera.nadir.Components.MenuButton;
 import com.github.jlagoscarrera.nadir.Core.NadirEngine;
 import com.github.jlagoscarrera.nadirGame.R;
 
+/**
+ * The menu scene.
+ */
 public class Menu extends Scene {
-    MenuButton btnPlay, btnTutorial, btnHiScores, btnOptions, btnExit, btnMusic, btnSound, btnVibrate;
+    /**
+     * The play button.
+     */
+    MenuButton btnPlay,
+    /**
+     * The tutorial button.
+     */
+    btnTutorial,
+    /**
+     * The testers button.
+     */
+    btnTesters,
+    /**
+     * The options button.
+     */
+    btnOptions,
+    /**
+     * The exit button.
+     */
+    btnExit,
+    /**
+     * The toggle music button.
+     */
+    btnMusic,
+    /**
+     * The toggle sound button.
+     */
+    btnSound,
+    /**
+     * The toggle vibrate button.
+     */
+    btnVibrate;
+    /**
+     * The Title of the scene.
+     */
     MenuButton title;
+    /**
+     * The music button icons.
+     */
     Bitmap[] musicIcons;
+    /**
+     * The sound button icons.
+     */
     Bitmap[] soundIcons;
+    /**
+     * The vibrate button icons.
+     */
     Bitmap[] vibrateIcons;
 
+    /**
+     * Instantiates a new menu scene.
+     *
+     * @param gameReference the game engine reference
+     * @param sceneId       the current scene id
+     * @param screenWidth   the screen width
+     * @param screenHeight  the screen height
+     */
     public Menu(NadirEngine gameReference, int sceneId, int screenWidth, int screenHeight) {
         super(gameReference, sceneId, screenWidth, screenHeight);
 
@@ -43,10 +97,10 @@ public class Menu extends Scene {
         btnTutorial.setText("Tutorial");
 
         //High Scores button
-        btnHiScores = new MenuButton(widthDiv * 13, heighDiv * 6, widthDiv * 23, heighDiv * 8);
-        btnHiScores.getpText().setTextSize((int) (heighDiv * 2 * 0.75));
-        btnHiScores.getpText().setTypeface(Typeface.createFromAsset(gameReference.getContext().getAssets(), "font/Poiretone.ttf"));
-        btnHiScores.setText("Testers");
+        btnTesters = new MenuButton(widthDiv * 13, heighDiv * 6, widthDiv * 23, heighDiv * 8);
+        btnTesters.getpText().setTextSize((int) (heighDiv * 2 * 0.75));
+        btnTesters.getpText().setTypeface(Typeface.createFromAsset(gameReference.getContext().getAssets(), "font/Poiretone.ttf"));
+        btnTesters.setText("Testers");
 
         //Settings button
         btnOptions = new MenuButton(widthDiv, heighDiv * 9, widthDiv * 11, heighDiv * 11);
@@ -84,6 +138,12 @@ public class Menu extends Scene {
         drawVibrateIcon();
     }
 
+    /**
+     * Handles touches on the screen, scene changes.
+     *
+     * @param event asociated event to the touch
+     * @return the new scene ID
+     */
     public int onTouchEvent(MotionEvent event) {
         int pointerIndex = event.getActionIndex();        //Obtain action index.
         int pointerID = event.getPointerId(pointerIndex); //Obtain id of the pointer asociated to the action.
@@ -97,7 +157,7 @@ public class Menu extends Scene {
                 //Touches en el menu
                 if (isTouched(btnPlay.getButton(), event)) return 1;
                 else if (isTouched(btnTutorial.getButton(), event)) return 96;
-                else if (isTouched(btnHiScores.getButton(), event)) return 97;
+                else if (isTouched(btnTesters.getButton(), event)) return 97;
                 else if (isTouched(btnOptions.getButton(), event)) return 98;
                 else if (isTouched(btnExit.getButton(), event)) return 99;
 
@@ -127,11 +187,19 @@ public class Menu extends Scene {
         return sceneId;
     }
 
+    /**
+     * Refresh parallax on screen.
+     */
     //We refresh game physics on screen.
     public void refreshPhysics() {
         refreshParallax();
     }
 
+    /**
+     * Draw on canvas.
+     *
+     * @param c the canvas to draw at
+     */
     //Drawing routine, called from the game thread.
     public void draw(Canvas c) {
         try {
@@ -143,7 +211,7 @@ public class Menu extends Scene {
 
             btnPlay.draw(c);
             btnTutorial.draw(c);
-            btnHiScores.draw(c);
+            btnTesters.draw(c);
             btnOptions.draw(c);
             btnExit.draw(c);
 
@@ -155,6 +223,9 @@ public class Menu extends Scene {
         }
     }
 
+    /**
+     * Draw music icon.
+     */
     public void drawMusicIcon() {
         if (gameReference.options.isMusicPlaying()) {
             btnMusic.setIcon(musicIcons[0]);
@@ -163,6 +234,9 @@ public class Menu extends Scene {
         }
     }
 
+    /**
+     * Draw sound icon.
+     */
     public void drawSoundIcon() {
         if (gameReference.options.isPlaySounds()) {
             btnSound.setIcon(soundIcons[0]);
@@ -171,6 +245,9 @@ public class Menu extends Scene {
         }
     }
 
+    /**
+     * Draw vibrate icon.
+     */
     public void drawVibrateIcon() {
         if (gameReference.options.isVibrate()) {
             btnVibrate.setIcon(vibrateIcons[0]);
