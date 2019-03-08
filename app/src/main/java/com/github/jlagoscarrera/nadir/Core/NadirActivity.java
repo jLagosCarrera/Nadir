@@ -8,10 +8,22 @@ import android.view.Window;
 
 import com.github.jlagoscarrera.nadir.Core.NadirEngine;
 
+/**
+ * The game activity.
+ */
 public class NadirActivity extends AppCompatActivity {
 
+    /**
+     * The game engine.
+     */
     NadirEngine nadirEngine;
 
+
+    /**
+     * Creates game engine and shows the view of it
+     *
+     * @param savedInstanceState Saved Instance State
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,6 +44,9 @@ public class NadirActivity extends AppCompatActivity {
         setContentView(nadirEngine);
     }
 
+    /**
+     * Sets view of the engine or creates it on resume
+     */
     @Override
     protected void onResume() {
         super.onResume();
@@ -52,6 +67,9 @@ public class NadirActivity extends AppCompatActivity {
         setContentView(nadirEngine);
     }
 
+    /**
+     * Do nothing on back button pressed
+     */
     @Override
     public void onBackPressed() {
 

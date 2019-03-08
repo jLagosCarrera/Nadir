@@ -14,16 +14,45 @@ import com.github.jlagoscarrera.nadirGame.R;
 
 import java.util.ArrayList;
 
+/**
+ * The rooms blocks filler.
+ */
 public class RoomFiller {
+    /**
+     * The Room type 1 open on sides.
+     */
     ArrayList<String[]> roomType1 = new ArrayList<>();
+    /**
+     * The Room type 2 open on bottom and sides.
+     */
     ArrayList<String[]> roomType2 = new ArrayList<>();
+    /**
+     * The Room type 3, open on top and sides.
+     */
     ArrayList<String[]> roomType3 = new ArrayList<>();
+    /**
+     * The Room type 0, side.
+     */
     ArrayList<String[]> roomType0 = new ArrayList<>();
 
+    /**
+     * Indicates if all has been generated.
+     */
     public boolean isGenerated;
+    /**
+     * The level path reference.
+     */
     public LevelGenerator level;
+    /**
+     * The game engine reference
+     */
     private NadirEngine gameReference;
 
+    /**
+     * Instantiates rooms filler.
+     *
+     * @param gameReference the game engine reference
+     */
     public RoomFiller(NadirEngine gameReference) {
         this.gameReference = gameReference;
         isGenerated = false;
@@ -32,6 +61,9 @@ public class RoomFiller {
         generateRooms();
     }
 
+    /**
+     * Initialize rooms types with given patterns.
+     */
     public void initializeRooms() {
         //Type 1 rooms.
         roomType1.add(new String[]{
@@ -202,6 +234,9 @@ public class RoomFiller {
         });
     }
 
+    /**
+     * Generate blocks in all rooms with given templates.
+     */
     public void generateRooms() {
         for (int a = 0; a < level.getRooms().length; a++) {
             for (int b = 0; b < level.getRooms()[a].length; b++) {

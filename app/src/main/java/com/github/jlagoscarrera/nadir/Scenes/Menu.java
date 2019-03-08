@@ -46,7 +46,7 @@ public class Menu extends Scene {
         btnHiScores = new MenuButton(widthDiv * 13, heighDiv * 6, widthDiv * 23, heighDiv * 8);
         btnHiScores.getpText().setTextSize((int) (heighDiv * 2 * 0.75));
         btnHiScores.getpText().setTypeface(Typeface.createFromAsset(gameReference.getContext().getAssets(), "font/Poiretone.ttf"));
-        btnHiScores.setText("High Scores");
+        btnHiScores.setText("Testers");
 
         //Settings button
         btnOptions = new MenuButton(widthDiv, heighDiv * 9, widthDiv * 11, heighDiv * 11);
@@ -105,19 +105,16 @@ public class Menu extends Scene {
                 if (isTouched(btnMusic.getButton(), event)) {
                     setMusic();
                     drawMusicIcon();
-                    gameReference.options.saveOptions();
                 }
 
                 if (isTouched(btnSound.getButton(), event)) {
                     setSound();
                     drawSoundIcon();
-                    gameReference.options.saveOptions();
                 }
 
                 if (isTouched(btnVibrate.getButton(), event)) {
                     setVibrate();
                     drawVibrateIcon();
-                    gameReference.options.saveOptions();
                 }
                 break;
 

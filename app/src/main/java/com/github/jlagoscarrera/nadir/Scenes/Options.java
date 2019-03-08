@@ -68,17 +68,14 @@ public class Options extends Scene {
 
                 if (isTouched(btnMusic.getButton(), event)) {
                     setMusic();
-                    gameReference.options.saveOptions();
                 }
 
                 if (isTouched(btnSound.getButton(), event)) {
                     setSound();
-                    gameReference.options.saveOptions();
                 }
 
                 if (isTouched(btnVibrate.getButton(), event)) {
                     setVibrate();
-                    gameReference.options.saveOptions();
                 }
                 break;
 

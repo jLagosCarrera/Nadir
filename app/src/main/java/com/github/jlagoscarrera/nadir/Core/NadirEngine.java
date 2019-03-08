@@ -2,15 +2,17 @@ package com.github.jlagoscarrera.nadir.Core;
 
 import android.content.Context;
 import android.graphics.Canvas;
+import android.media.AudioAttributes;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
+import android.media.SoundPool;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
 import com.github.jlagoscarrera.nadir.Scenes.Tutorial;
-import com.github.jlagoscarrera.nadir.Scenes.HiScores;
+import com.github.jlagoscarrera.nadir.Scenes.Testers;
 import com.github.jlagoscarrera.nadir.Scenes.Menu;
 import com.github.jlagoscarrera.nadir.Scenes.Options;
 import com.github.jlagoscarrera.nadir.Scenes.Play;
@@ -29,10 +31,13 @@ public class NadirEngine extends SurfaceView implements SurfaceHolder.Callback {
     private boolean running = false;        //Thread control.
     private Scene actualScene;
     private AudioManager audioManager;
+    public SoundPool effects;
+    public int jumpSound, moveSound;
+    final private int maxSimultaneousSounds = 10;
     public MediaPlayer gameMusic;
-    private int volume;
+    public int volume;
     public OptionsSettings options;
-    private NadirActivity activity;
+    public static NadirActivity activity;
 
 
     public NadirEngine(NadirActivity activity) {
@@ -43,6 +48,19 @@ public class NadirEngine extends SurfaceView implements SurfaceHolder.Callback {
         this.activity = activity;
         gameThread = new GameThread();          //Initialize the thread.
         options = new OptionsSettings(context);
+
+        if ((android.os.Build.VERSION.SDK_INT) >= 21) {
+            SoundPool.Builder spb = new SoundPool.Builder();
+            spb.setAudioAttributes(new AudioAttributes.Builder().setUsage(AudioAttributes.USAGE_MEDIA)
+                    .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION).build());
+            spb.setMaxStreams(maxSimultaneousSounds);
+            this.effects = spb.build();
+        } else {
+            this.effects = new SoundPool(maxSimultaneousSounds, AudioManager.STREAM_MUSIC, 0);
+        }
+        jumpSound = effects.load(context, R.raw.jump, 1);
+        moveSound = effects.load(context, R.raw.walk, 1);
+
         setFocusable(true);                     //We assure that it receives isTouched events./
     }
 
@@ -62,12 +80,14 @@ public class NadirEngine extends SurfaceView implements SurfaceHolder.Callback {
                         actualScene = new Tutorial(this, 1, screenWidth, screenHeight);
                         break;
                     case 97:
-                        actualScene = new HiScores(this, 1, screenWidth, screenHeight);
+                        actualScene = new Testers(this, 1, screenWidth, screenHeight);
                         break;
                     case 98:
                         actualScene = new Options(this, 98, screenWidth, screenHeight);
                         break;
                     case 99:
+                        options.saveOptions();
+                        stopSounds();
                         activity.finishAndRemoveTask();
                         break;
                 }
@@ -93,14 +113,14 @@ public class NadirEngine extends SurfaceView implements SurfaceHolder.Callback {
 
         if (options == null) {
             options = new OptionsSettings(context);
+            options.loadOptions();
         }
-        options.loadOptions();
         updateAudioObjects();
         updateVolume();
         updateMusicPlayer();
 
 
-            actualScene = new Menu(this, 0, screenWidth, screenHeight);
+        actualScene = new Menu(this, 0, screenWidth, screenHeight);
 
 
         gameThread.setWorking(true);                    //We start the game.
@@ -118,7 +138,7 @@ public class NadirEngine extends SurfaceView implements SurfaceHolder.Callback {
         gameThread.setWorking(false);   //We stop game thread.
         try {
             gameThread.join();          //Wait till it finishes.
-            gameMusic.pause();
+            stopSounds();
             options.saveOptions();
         } catch (InterruptedException e) {
             e.printStackTrace();
@@ -133,6 +153,7 @@ public class NadirEngine extends SurfaceView implements SurfaceHolder.Callback {
             gameMusic = MediaPlayer.create(context, R.raw.antares_outsider);
             try {
                 gameMusic.prepare();
+                gameMusic.setLooping(true);
             } catch (IllegalStateException | IOException e) {
                 Log.e("Error playing music", "" + e.getLocalizedMessage());
             }
@@ -141,16 +162,32 @@ public class NadirEngine extends SurfaceView implements SurfaceHolder.Callback {
     }
 
     public void updateVolume() {
-        volume = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
-        gameMusic.setVolume(volume / 3, volume / 3);
+        if (audioManager != null)
+            volume = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
+        if (gameMusic != null)
+            gameMusic.setVolume(volume / 2, volume / 2);
     }
 
     public void updateMusicPlayer() {
         if (!gameMusic.isPlaying() && options.isMusicPlaying()) {
+            try {
+                gameMusic.prepare();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
             gameMusic.start();
         } else if (gameMusic.isPlaying() && !options.isMusicPlaying()) {
             gameMusic.pause();
         }
+    }
+
+    public void stopSounds() {
+        if (gameMusic != null) {
+            gameMusic.stop();
+            gameMusic.release();
+        }
+        gameMusic = null;
+        audioManager = null;
     }
 
     //GameThread class in which we implement drawing and physics methods

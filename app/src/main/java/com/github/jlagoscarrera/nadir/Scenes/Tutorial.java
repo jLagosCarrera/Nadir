@@ -10,9 +10,23 @@ import com.github.jlagoscarrera.nadir.Components.MenuButton;
 import com.github.jlagoscarrera.nadir.Core.NadirEngine;
 import com.github.jlagoscarrera.nadirGame.R;
 
+/**
+ * The tutorial scene.
+ */
 public class Tutorial extends Scene {
+    /**
+     * The button for going back to menu.
+     */
     MenuButton btnBack;
 
+    /**
+     * Instantiates a new tutorial scene.
+     *
+     * @param gameReference the game engine reference
+     * @param sceneId       the asociated scene id
+     * @param screenWidth   the screen width
+     * @param screenHeight  the screen height
+     */
     public Tutorial(NadirEngine gameReference, int sceneId, int screenWidth, int screenHeight) {
         super(gameReference, sceneId, screenWidth, screenHeight);
 
@@ -21,6 +35,12 @@ public class Tutorial extends Scene {
         btnBack.setIcon(BitmapFactory.decodeResource(gameReference.getResources(), R.mipmap.backarrow));
     }
 
+    /**
+     * Handles touches on the screen.
+     *
+     * @param event asociated event to the touch
+     * @return the new scene ID
+     */
     public int onTouchEvent(MotionEvent event) {
         int pointerIndex = event.getActionIndex();        //Obtain action index.
         int pointerID = event.getPointerId(pointerIndex); //Obtain id of the pointer asociated to the action.
@@ -43,11 +63,19 @@ public class Tutorial extends Scene {
         return sceneId;
     }
 
+    /**
+     * Refresh parallax on screen.
+     */
     //We refresh game physics on screen.
     public void refreshPhysics() {
         refreshParallax();
     }
 
+    /**
+     * Draw on canvas.
+     *
+     * @param c the canvas to draw at
+     */
     //Drawing routine, called from the game thread.
     public void draw(Canvas c) {
         try {

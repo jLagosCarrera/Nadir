@@ -13,15 +13,55 @@ import com.github.jlagoscarrera.nadir.Components.MovingBackground;
 import com.github.jlagoscarrera.nadir.Core.NadirEngine;
 import com.github.jlagoscarrera.nadirGame.R;
 
+/**
+ * The basic scene.
+ */
 public class Scene {
+    /**
+     * Images used on parallax.
+     */
     static private int[] backgrounds = {R.mipmap.back, R.mipmap.mid, R.mipmap.front};
+    /**
+     * The Parallax.
+     */
     static MovingBackground[] parallax;
+    /**
+     * Parallax created or not.
+     */
     static boolean isParallaxCreated = false;
+    /**
+     * The Game engine reference.
+     */
     NadirEngine gameReference;
+    /**
+     * The current Scene id.
+     */
     public int sceneId;
-    int screenWidth, screenHeight;
-    int widthDiv, heighDiv;
+    /**
+     * The Screen width.
+     */
+    int screenWidth;
+    /**
+     * The Screen height.
+     */
+    int screenHeight;
+    /**
+     * The Width divisor for buttons.
+     */
+    int widthDiv;
+    /**
+     * The Heigh divisor for buttons.
+     */
+    int heighDiv;
 
+    /**
+     * Instantiates a new basic scene.
+     *
+     * @param gameReference the game engine reference
+     * @param sceneId       the current scene id
+     * @param screenWidth   the screen width
+     * @param screenHeight  the screen height
+     */
     public Scene(NadirEngine gameReference, int sceneId, int screenWidth, int screenHeight) {
         this.gameReference = gameReference;
         this.sceneId = sceneId;
@@ -43,6 +83,12 @@ public class Scene {
         }
     }
 
+    /**
+     * Touch event handling.
+     *
+     * @param event the touch event
+     * @return the new Scene ID
+     */
     public int onTouchEvent(MotionEvent event) {
         int pointerIndex = event.getActionIndex();        //Obtain action index.
         int pointerID = event.getPointerId(pointerIndex); //Obtain id of the pointer asociated to the action.
@@ -63,12 +109,20 @@ public class Scene {
         return sceneId;
     }
 
-    //We refresh game physics on screen.
+    /**
+     * Refresh physics.
+     */
+//We refresh game physics on screen.
     public void refreshPhysics() {
 
     }
 
-    //Drawing routine, called from the game thread.
+    /**
+     * Draw on the canvas.
+     *
+     * @param c the canvas to draw at
+     */
+//Drawing routine, called from the game thread.
     public void draw(Canvas c) {
         try {
 
@@ -77,6 +131,13 @@ public class Scene {
         }
     }
 
+    /**
+     * Checks if a button has been touched.
+     *
+     * @param button the button to check
+     * @param event  the touch event
+     * @return if is touched or not
+     */
     public boolean isTouched(Rect button, MotionEvent event) {
         if (button.contains((int) event.getX(), (int) event.getY())) {
             return true;
@@ -85,6 +146,9 @@ public class Scene {
         }
     }
 
+    /**
+     * Refresh parallax.
+     */
     public void refreshParallax() {
         for (int i = 0; i < parallax.length; i++) {
             parallax[i].move((i + 1) * 2);
@@ -94,6 +158,11 @@ public class Scene {
         }
     }
 
+    /**
+     * Draw parallax on the canvas.
+     *
+     * @param c the canvas to draw at
+     */
     public void drawParallax(Canvas c) {
         for (int i = 0; i < parallax.length; i++) {
             c.drawBitmap(parallax[i].image, parallax[i].position.x, parallax[i].position.y, null);
@@ -101,50 +170,97 @@ public class Scene {
         }
     }
 
+    /**
+     * Sets music to activated or not.
+     */
     public void setMusic() {
         gameReference.options.setMusicPlaying(!gameReference.options.isMusicPlaying());
         gameReference.updateAudioObjects();
         gameReference.updateMusicPlayer();
     }
 
+    /**
+     * Sets sound to activated or not.
+     */
     public void setSound() {
         gameReference.options.setPlaySounds(!gameReference.options.isPlaySounds());
-        gameReference.updateAudioObjects();
-        gameReference.updateMusicPlayer();
     }
 
+    /**
+     * Sets vibrate to activated or not.
+     */
     public void setVibrate() {
         gameReference.options.setVibrate(!gameReference.options.isVibrate());
     }
 
+    /**
+     * Gets game engine reference.
+     *
+     * @return the game engine reference
+     */
     public NadirEngine getGameReference() {
         return gameReference;
     }
 
+    /**
+     * Sets game engine reference.
+     *
+     * @param gameReference the game engine reference
+     */
     public void setGameReference(NadirEngine gameReference) {
         this.gameReference = gameReference;
     }
 
+    /**
+     * Gets current scene id.
+     *
+     * @return the current scene id
+     */
     public int getSceneId() {
         return sceneId;
     }
 
+    /**
+     * Sets current scene id.
+     *
+     * @param sceneId the current scene id
+     */
     public void setSceneId(int sceneId) {
         this.sceneId = sceneId;
     }
 
+    /**
+     * Gets screen width.
+     *
+     * @return the screen width
+     */
     public int getScreenWidth() {
         return screenWidth;
     }
 
+    /**
+     * Sets screen width.
+     *
+     * @param screenWidth the screen width
+     */
     public void setScreenWidth(int screenWidth) {
         this.screenWidth = screenWidth;
     }
 
+    /**
+     * Gets screen height.
+     *
+     * @return the screen height
+     */
     public int getScreenHeight() {
         return screenHeight;
     }
 
+    /**
+     * Sets screen height.
+     *
+     * @param screenHeight the screen height
+     */
     public void setScreenHeight(int screenHeight) {
         this.screenHeight = screenHeight;
     }
