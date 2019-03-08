@@ -53,6 +53,7 @@ public class OptionsSettings {
     public OptionsSettings(Context context) {
         this.context = context;
         options = context.getSharedPreferences(optionsPreferences, Context.MODE_PRIVATE);
+        loadOptions();
     }
 
     /**
@@ -72,7 +73,7 @@ public class OptionsSettings {
         editor.putBoolean(musicPreference, isMusicPlaying());
         editor.putBoolean(soundsPreference, isPlaySounds());
         editor.putBoolean(musicPreference, isVibrate());
-        editor.apply();
+        editor.commit();
     }
 
     /**

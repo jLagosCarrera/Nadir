@@ -18,6 +18,10 @@ public class NadirActivity extends AppCompatActivity {
      */
     NadirEngine nadirEngine;
 
+    /**
+     * Stores the state of the music
+     */
+    private boolean previousMusicState;
 
     /**
      * Creates game engine and shows the view of it
@@ -63,8 +67,23 @@ public class NadirActivity extends AppCompatActivity {
         if (nadirEngine == null) {
             nadirEngine = new NadirEngine(this);
         }
+        nadirEngine.options.setMusicPlaying(previousMusicState);
+        nadirEngine.updateAudioObjects();
+        nadirEngine.updateMusicPlayer();
+
         nadirEngine.setKeepScreenOn(true);
         setContentView(nadirEngine);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (nadirEngine != null) {
+            previousMusicState = nadirEngine.options.isMusicPlaying();
+            nadirEngine.options.setMusicPlaying(false);
+            nadirEngine.updateMusicPlayer();
+            nadirEngine.stopSounds();
+        }
     }
 
     /**

@@ -55,7 +55,7 @@ public class NadirEngine extends SurfaceView implements SurfaceHolder.Callback {
      */
     private Scene actualScene;
     /**
-     * Audio manager
+     * Audio manager for sounds
      */
     private AudioManager audioManager;
     /**
@@ -149,8 +149,6 @@ public class NadirEngine extends SurfaceView implements SurfaceHolder.Callback {
                         actualScene = new Options(this, 98, screenWidth, screenHeight);
                         break;
                     case 99:
-                        options.saveOptions();
-                        stopSounds();
                         activity.finishAndRemoveTask();
                         break;
                 }
@@ -161,7 +159,7 @@ public class NadirEngine extends SurfaceView implements SurfaceHolder.Callback {
     }
 
     /**
-     * New surface created.
+     * New surface created actions.
      *
      * @param holder surface holder
      */
@@ -175,10 +173,10 @@ public class NadirEngine extends SurfaceView implements SurfaceHolder.Callback {
     }
 
     /**
-     * Surface dimensions changed.
+     * Surface dimensions changed actions.
      *
      * @param holder surface holder
-     * @param format
+     * @param format the format
      * @param width  new screen width
      * @param height new screen height
      */
@@ -195,9 +193,7 @@ public class NadirEngine extends SurfaceView implements SurfaceHolder.Callback {
         updateVolume();
         updateMusicPlayer();
 
-
         actualScene = new Menu(this, 0, screenWidth, screenHeight);
-
 
         gameThread.setWorking(true);                    //We start the game.
         if (gameThread.getState() == Thread.State.NEW)  //Creates the thread if it isnt created.
@@ -249,10 +245,14 @@ public class NadirEngine extends SurfaceView implements SurfaceHolder.Callback {
      * Update volume.
      */
     public void updateVolume() {
-        if (audioManager != null)
-            volume = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
-        if (gameMusic != null)
-            gameMusic.setVolume(volume / 2, volume / 2);
+        try {
+            if (audioManager != null)
+                volume = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
+            if (gameMusic != null)
+                gameMusic.setVolume(volume / 2, volume / 2);
+        } catch (IllegalStateException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
