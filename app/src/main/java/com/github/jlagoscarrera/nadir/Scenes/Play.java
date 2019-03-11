@@ -281,6 +281,7 @@ public class Play extends Scene implements SensorEventListener {
         sensorManager.registerListener(this, proximidad, SensorManager.SENSOR_DELAY_NORMAL);
 
         startTime = System.currentTimeMillis();
+        gameReference.options.vibrate();
     }
 
     /**
@@ -350,9 +351,11 @@ public class Play extends Scene implements SensorEventListener {
         player.aplicarGravedad();
 
         if (jumping) {
-            gameReference.effects.play(gameReference.jumpSound,
-                    gameReference.volume, gameReference.volume,
-                    1, 0, 1);
+            if (gameReference.options.isPlaySounds()) {
+                gameReference.effects.play(gameReference.jumpSound,
+                        gameReference.volume, gameReference.volume,
+                        1, 0, 1);
+            }
             player.jump();
         }
         if (movingLeft) {
@@ -361,16 +364,18 @@ public class Play extends Scene implements SensorEventListener {
         if (movingRight) {
             player.moveRight();
         }
-        if (movingLeft || movingRight) {
-            if (!alreadyPlayingMoveSoung) {
-                soundMoveID = gameReference.effects.play(gameReference.moveSound,
-                        gameReference.volume, gameReference.volume,
-                        1, -1, 1);
-                alreadyPlayingMoveSoung = true;
+        if (gameReference.options.isPlaySounds()) {
+            if (movingLeft || movingRight) {
+                if (!alreadyPlayingMoveSoung) {
+                    soundMoveID = gameReference.effects.play(gameReference.moveSound,
+                            gameReference.volume, gameReference.volume,
+                            1, -1, 1);
+                    alreadyPlayingMoveSoung = true;
+                }
+            } else {
+                gameReference.effects.stop(soundMoveID);
+                alreadyPlayingMoveSoung = false;
             }
-        } else {
-            gameReference.effects.stop(soundMoveID);
-            alreadyPlayingMoveSoung = false;
         }
 
         if (endRoom.contains(player.getX(), player.getY())) {
@@ -476,6 +481,7 @@ public class Play extends Scene implements SensorEventListener {
                     float speed = Math.abs(x + y + z - last_x - last_y - last_z) / milisDiff * 10000;
 
                     if (speed > SENSIBILITY && playerIsOnEnd) {
+                        gameReference.options.vibrate();
                         long endTime = System.currentTimeMillis() - startTime;
                         gameReference.endTime = String.format("%02d:%02d:%02d", TimeUnit.MILLISECONDS.toHours(endTime),
                                 TimeUnit.MILLISECONDS.toMinutes(endTime) % TimeUnit.HOURS.toMinutes(1),

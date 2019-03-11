@@ -122,10 +122,12 @@ public class Scene {
      *
      * @param c the canvas to draw at
      */
-//Drawing routine, called from the game thread.
+    //Drawing routine, called from the game thread.
     public void draw(Canvas c) {
         try {
+            if (sceneId == 1){
 
+            }
         } catch (Exception e) {
             Log.i("Drawing error", e.getLocalizedMessage());
         }

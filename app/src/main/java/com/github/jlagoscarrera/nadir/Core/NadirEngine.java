@@ -116,7 +116,8 @@ public class NadirEngine extends SurfaceView implements SurfaceHolder.Callback {
         this.context = activity.getApplicationContext();                 //We obtain context.
         this.activity = activity;
         gameThread = new GameThread();          //Initialize the thread.
-        options = new OptionsSettings(context);
+        options = new OptionsSettings(this);
+        options.leerTesters();
 
         if ((android.os.Build.VERSION.SDK_INT) >= 21) {
             SoundPool.Builder spb = new SoundPool.Builder();
@@ -207,7 +208,7 @@ public class NadirEngine extends SurfaceView implements SurfaceHolder.Callback {
         screenHeight = height;  //New screen height is set.
 
         if (options == null) {
-            options = new OptionsSettings(context);
+            options = new OptionsSettings(this);
             options.loadOptions();
         }
         updateAudioObjects();

@@ -122,21 +122,26 @@ public class Testers extends Scene {
             //Draw parallax
             drawParallax(c);
 
-            c.save();
-            c.translate(0, -offsetY);
-            int startY = 0;
-            for (int i = gameReference.testers.size() - 1; i >= 0; i--) {
-                System.out.println(gameReference.endTime);
-                c.drawText(gameReference.testers.get(i), 5, startY + text.getTextSize(), text);
-                startY += text.getTextSize() + 5;
-            }
-            maxOffset = startY;
-            if (maxOffset > screenHeight) {
-                maxOffset = maxOffset - screenHeight;
+            if (gameReference.testers.size() == 0) {
+                c.drawText(gameReference.getContext().getString(R.string.noTesters), 5, text.getTextSize(), text);
             } else {
-                maxOffset = 0;
+                c.save();
+                c.translate(0, -offsetY);
+
+                int startY = 0;
+                for (int i = gameReference.testers.size() - 1; i >= 0; i--) {
+                    System.out.println(gameReference.endTime);
+                    c.drawText(gameReference.testers.get(i), 5, startY + text.getTextSize(), text);
+                    startY += text.getTextSize() + 5;
+                }
+                maxOffset = startY;
+                if (maxOffset > screenHeight) {
+                    maxOffset = maxOffset - screenHeight;
+                } else {
+                    maxOffset = 0;
+                }
+                c.restore();
             }
-            c.restore();
 
             btnBack.draw(c);
 

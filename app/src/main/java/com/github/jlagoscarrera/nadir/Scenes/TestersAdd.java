@@ -129,12 +129,12 @@ public class TestersAdd extends Scene {
                 break;
             case MotionEvent.ACTION_UP:             //Last finger up.
             case MotionEvent.ACTION_POINTER_UP:     //Any finger that isnt the last up.
-                if (isTouched(firstUp.getButton(), event)) updateChar(true, firstChar);
-                if (isTouched(firstDown.getButton(), event)) updateChar(false, firstChar);
-                if (isTouched(secondUp.getButton(), event)) updateChar(true, secondChar);
-                if (isTouched(secondDown.getButton(), event)) updateChar(false, secondChar);
-                if (isTouched(thirdUp.getButton(), event)) updateChar(true, thirdChar);
-                if (isTouched(thirdDown.getButton(), event)) updateChar(false, thirdChar);
+                if (isTouched(firstUp.getButton(), event)) updateChar(false, firstChar);
+                if (isTouched(firstDown.getButton(), event)) updateChar(true, firstChar);
+                if (isTouched(secondUp.getButton(), event)) updateChar(false, secondChar);
+                if (isTouched(secondDown.getButton(), event)) updateChar(true, secondChar);
+                if (isTouched(thirdUp.getButton(), event)) updateChar(false, thirdChar);
+                if (isTouched(thirdDown.getButton(), event)) updateChar(true, thirdChar);
 
                 if (isTouched(accept.getButton(), event)) {
                     String currentDate = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(new Date());

@@ -20,4 +20,5 @@
     <string name="thanks">Thanks all for playing this game, it might not be the best and maybe needs more work but its a great piece for showing procedural generation on a 2d maze. Follow me on twitter @lagoscrack and insta @juliolagos98, work of Julio Lagos Carrera, student from Colegio Vivas on 2019</string>
     <string name="accept">Accept</string>
     <string name="ended">Ended in:</string>
+    <string name="noTesters">There arent testers yet</string>
 </resources>
