@@ -7,6 +7,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.graphics.Typeface;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -86,6 +87,10 @@ public class Play extends Scene implements SensorEventListener {
      */
     boolean movingRight;
     /**
+     * Indicated if it has to keep drawing game things on screen
+     */
+    boolean keepDrawing;
+    /**
      * Indicates if player is on end room.
      */
     boolean playerIsOnEnd;
@@ -131,11 +136,14 @@ public class Play extends Scene implements SensorEventListener {
      * The Day block bitmap.
      */
     Bitmap dayBlock;
-
     /**
      * The Game engine reference.
      */
     NadirEngine gameReference;
+    /**
+     * Menu button that will say us that we finished
+     */
+    MenuButton end;
 
     /**
      * Instantiates a new play scene.
@@ -149,6 +157,8 @@ public class Play extends Scene implements SensorEventListener {
         super(gameReference, sceneId, screenWidth, screenHeight);
 
         this.gameReference = gameReference;
+
+        keepDrawing = true;
 
         Bitmap aux;
         aux = BitmapFactory.decodeResource(gameReference.getResources(), R.mipmap.underwaternight);
@@ -169,6 +179,11 @@ public class Play extends Scene implements SensorEventListener {
         blockWidth = blockHeigth;
         blockX = 0;
         blockY = 0;
+
+        end = new MenuButton(widthDiv * 6, heighDiv * 4, widthDiv * 18, heighDiv * 8);
+        end.getpText().setTextSize((int) (heighDiv * 3 * 0.75));
+        end.getpText().setTypeface(Typeface.createFromAsset(gameReference.getContext().getAssets(), "font/Seaside.ttf"));
+        end.setText(gameReference.getContext().getString(R.string.end));
 
         //Btn Back
         btnBack = new MenuButton((screenWidth / 24) * 23, 0, screenWidth, (screenHeight / 12));
@@ -249,7 +264,6 @@ public class Play extends Scene implements SensorEventListener {
         sensorManager.registerListener(this, acelerometro, SensorManager.SENSOR_DELAY_NORMAL);
         proximidad = sensorManager.getDefaultSensor(Sensor.TYPE_PROXIMITY);
         sensorManager.registerListener(this, proximidad, SensorManager.SENSOR_DELAY_NORMAL);
-
     }
 
     /**
@@ -287,6 +301,7 @@ public class Play extends Scene implements SensorEventListener {
                 if (isTouched(btnRight.getButton(), event)) {
                     movingRight = false;
                 }
+                if (isTouched(end.getButton(), event) && !keepDrawing) return 93;
                 break;
             case MotionEvent.ACTION_MOVE: //Any finger is moved.
                 break;
@@ -354,45 +369,49 @@ public class Play extends Scene implements SensorEventListener {
         try {
             c.drawBitmap(currentBackground, 0, 0, null);
 
-            c.save();
-            c.translate((-r.level.getStartRoom().getX() * blockWidth * 10) + player.offSetX, (-r.level.getStartRoom().getY() * blockHeigth * 8) + player.offSetY);
-            if (r.isGenerated) {
-                Rect blockRect;
-                for (int i = 0; i < r.level.getRooms().length; i++) {
-                    for (int j = 0; j < r.level.getRooms()[i].length; j++) {
-                        blockY = i * blockHeigth * 8;
-                        for (int k = 0; k < r.level.getRooms()[i][j].blocks.length; k++) {
-                            blockX = j * blockWidth * 10;
-                            for (int l = 0; l < r.level.getRooms()[i][j].blocks[k].length; l++) {
-                                blockRect = new Rect(blockX, blockY, blockX + blockWidth, blockY + blockHeigth);
+            if (keepDrawing) {
+                c.save();
+                c.translate((-r.level.getStartRoom().getX() * blockWidth * 10) + player.offSetX, (-r.level.getStartRoom().getY() * blockHeigth * 8) + player.offSetY);
+                if (r.isGenerated) {
+                    Rect blockRect;
+                    for (int i = 0; i < r.level.getRooms().length; i++) {
+                        for (int j = 0; j < r.level.getRooms()[i].length; j++) {
+                            blockY = i * blockHeigth * 8;
+                            for (int k = 0; k < r.level.getRooms()[i][j].blocks.length; k++) {
+                                blockX = j * blockWidth * 10;
+                                for (int l = 0; l < r.level.getRooms()[i][j].blocks[k].length; l++) {
+                                    blockRect = new Rect(blockX, blockY, blockX + blockWidth, blockY + blockHeigth);
 
-                                if (r.level.getRooms()[i][j].blocks[k][l] == null) {
-                                    r.level.getRooms()[i][j].blocks[k][l] = new Block(null, false, '0');
-                                } else {
-                                    if (r.level.getRooms()[i][j].blocks[k][l].isCollisionable()) {
-                                        r.level.getRooms()[i][j].blocks[k][l].setTile(currentBlock);
-                                        c.drawBitmap(r.level.getRooms()[i][j].blocks[k][l].getTile(), null, blockRect, null);
+                                    if (r.level.getRooms()[i][j].blocks[k][l] == null) {
+                                        r.level.getRooms()[i][j].blocks[k][l] = new Block(null, false, '0');
+                                    } else {
+                                        if (r.level.getRooms()[i][j].blocks[k][l].isCollisionable()) {
+                                            r.level.getRooms()[i][j].blocks[k][l].setTile(currentBlock);
+                                            c.drawBitmap(r.level.getRooms()[i][j].blocks[k][l].getTile(), null, blockRect, null);
+                                        }
                                     }
+                                    r.level.getRooms()[i][j].blocks[k][l].setBlockRect(blockRect);
+                                    blockX += blockWidth;
                                 }
-                                r.level.getRooms()[i][j].blocks[k][l].setBlockRect(blockRect);
-                                blockX += blockWidth;
+                                blockY += blockHeigth;
                             }
-                            blockY += blockHeigth;
                         }
                     }
                 }
-            }
-            c.restore();
+                c.restore();
+                btnLeft.draw(c);
+                btnRight.draw(c);
+                btnJump.draw(c);
+                player.draw(c);
 
-            if (playerIsOnEnd) {
-                c.drawRect(0, 0, screenWidth, screenHeight, endPaint);
+                if (playerIsOnEnd) {
+                    c.drawRect(0, 0, screenWidth, screenHeight, endPaint);
+                }
+            } else {
+                end.draw(c);
             }
 
-            btnLeft.draw(c);
-            btnRight.draw(c);
-            btnJump.draw(c);
             btnBack.draw(c);
-            player.draw(c);
         } catch (Exception e) {
             Log.i("Drawing error", e.getLocalizedMessage());
             e.printStackTrace();
@@ -436,7 +455,7 @@ public class Play extends Scene implements SensorEventListener {
                     float speed = Math.abs(x + y + z - last_x - last_y - last_z) / milisDiff * 10000;
 
                     if (speed > SENSIBILITY && playerIsOnEnd) {
-                        Log.i("ACABASTE LOCO", "proban2");
+                        keepDrawing = false;
                     }
 
                     last_x = x;
@@ -460,7 +479,7 @@ public class Play extends Scene implements SensorEventListener {
     /**
      * Accuracy changed on a sensor.
      *
-     * @param sensor the sensor that changed accuracy
+     * @param sensor   the sensor that changed accuracy
      * @param accuracy accuracy change
      */
     @Override

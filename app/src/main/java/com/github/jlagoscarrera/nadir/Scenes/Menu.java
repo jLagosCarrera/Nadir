@@ -23,7 +23,7 @@ public class Menu extends Scene {
     /**
      * The tutorial button.
      */
-    btnTutorial,
+    btnInfo,
     /**
      * The testers button.
      */
@@ -82,37 +82,37 @@ public class Menu extends Scene {
         title.getpButtonBorder().setColor(Color.TRANSPARENT);
         title.getpText().setTextSize((int) (heighDiv * 3 * 0.75));
         title.getpText().setTypeface(Typeface.createFromAsset(gameReference.getContext().getAssets(), "font/Seaside.ttf"));
-        title.setText("NADIR");
+        title.setText(gameReference.getContext().getString(R.string.app_name).toUpperCase());
 
         //Play button
         btnPlay = new MenuButton(widthDiv * 6, heighDiv * 3, widthDiv * 18, heighDiv * 5);
         btnPlay.getpText().setTextSize((int) (heighDiv * 2 * 0.75));
         btnPlay.getpText().setTypeface(Typeface.createFromAsset(gameReference.getContext().getAssets(), "font/Poiretone.ttf"));
-        btnPlay.setText("Play");
+        btnPlay.setText(gameReference.getContext().getString(R.string.play));
 
-        //Tutorial, skins... button
-        btnTutorial = new MenuButton(widthDiv, heighDiv * 6, widthDiv * 11, heighDiv * 8);
-        btnTutorial.getpText().setTextSize((int) (heighDiv * 2 * 0.75));
-        btnTutorial.getpText().setTypeface(Typeface.createFromAsset(gameReference.getContext().getAssets(), "font/Poiretone.ttf"));
-        btnTutorial.setText("Tutorial");
+        //Information, skins... button
+        btnInfo = new MenuButton(widthDiv, heighDiv * 6, widthDiv * 11, heighDiv * 8);
+        btnInfo.getpText().setTextSize((int) (heighDiv * 2 * 0.75));
+        btnInfo.getpText().setTypeface(Typeface.createFromAsset(gameReference.getContext().getAssets(), "font/Poiretone.ttf"));
+        btnInfo.setText(gameReference.getContext().getString(R.string.info));
 
-        //High Scores button
+        //Testers button
         btnTesters = new MenuButton(widthDiv * 13, heighDiv * 6, widthDiv * 23, heighDiv * 8);
         btnTesters.getpText().setTextSize((int) (heighDiv * 2 * 0.75));
         btnTesters.getpText().setTypeface(Typeface.createFromAsset(gameReference.getContext().getAssets(), "font/Poiretone.ttf"));
-        btnTesters.setText("Testers");
+        btnTesters.setText(gameReference.getContext().getString(R.string.testers));
 
         //Settings button
         btnOptions = new MenuButton(widthDiv, heighDiv * 9, widthDiv * 11, heighDiv * 11);
         btnOptions.getpText().setTextSize((int) (heighDiv * 2 * 0.75));
         btnOptions.getpText().setTypeface(Typeface.createFromAsset(gameReference.getContext().getAssets(), "font/Poiretone.ttf"));
-        btnOptions.setText("Options");
+        btnOptions.setText(gameReference.getContext().getString(R.string.options));
 
         //Exit button
         btnExit = new MenuButton(widthDiv * 13, heighDiv * 9, widthDiv * 23, heighDiv * 11);
         btnExit.getpText().setTextSize((int) (heighDiv * 2 * 0.75));
         btnExit.getpText().setTypeface(Typeface.createFromAsset(gameReference.getContext().getAssets(), "font/Poiretone.ttf"));
-        btnExit.setText("Exit");
+        btnExit.setText(gameReference.getContext().getString(R.string.exit));
 
         //Load icons
         musicIcons = new Bitmap[]{
@@ -156,7 +156,7 @@ public class Menu extends Scene {
             case MotionEvent.ACTION_POINTER_UP:     //Any finger that isnt the last up.
                 //Touches en el menu
                 if (isTouched(btnPlay.getButton(), event)) return 1;
-                else if (isTouched(btnTutorial.getButton(), event)) return 96;
+                else if (isTouched(btnInfo.getButton(), event)) return 96;
                 else if (isTouched(btnTesters.getButton(), event)) return 97;
                 else if (isTouched(btnOptions.getButton(), event)) return 98;
                 else if (isTouched(btnExit.getButton(), event)) return 99;
@@ -210,7 +210,7 @@ public class Menu extends Scene {
             title.draw(c);
 
             btnPlay.draw(c);
-            btnTutorial.draw(c);
+            btnInfo.draw(c);
             btnTesters.draw(c);
             btnOptions.draw(c);
             btnExit.draw(c);

@@ -1,3 +1,21 @@
 <resources>
-    <string name="app_name">Nadir</string>
+    <string name="app_name" translatable="false">Nadir</string>
+    <string name="end">End</string>
+    <string name="play">Play</string>
+    <string name="tutorial">Tutorial</string>
+    <string name="testers">Testers</string>
+    <string name="options">Options</string>
+    <string name="exit">Exit</string>
+    <string name="music">Music</string>
+    <string name="sound">Sound</string>
+    <string name="vibration">Vibration</string>
+    <string name="info">Information</string>
+    <string name="credits">Credits</string>
+    <string name="gameInfo">Nadir is a simple game where procedurally generated maps are tested with a simple controls. Try to go from start to end room where you have to shake the phone for ending.</string>
+    <string name="controls">Controls are simple and intuitive, 1 move left, 2 moves right, 3 jumps and 4 goes back to menu</string>
+    <string name="shakeEnd">When you reach the end all you have to do is shake the phone, you will notice you are at the end because the screen border will become green</string>
+    <string name="sprites">All sprites used are free, thanks to Luis Zuno (@ansimuz) for character and menu parallax sprites, to Ciera Elizabeth (@SugarMoonWitch) for background and @SpiderDave for bricks</string>
+    <string name="audio">Thanks to Tomás Cardenal for its song Antares used in the game. The other audio used in the game is made by me and my voice.</string>
+    <string name="spThanks">Special thanks to Tomás Cardenal and Nuria Oujo for being there supporting during the development of this game. Special thanks to my teachers Javier Conde, Curro Bellas and Mila Ausín for what I\'ve learnt this 2 years</string>
+    <string name="thanks">Thanks all for playing this game, it might not be the best and maybe needs more work but its a great piece for showing procedural generation on a 2d maze. Follow me on twitter @lagoscrack and insta @juliolagos98, work of Julio Lagos Carrera, student from Colegio Vivas on 2019</string>
 </resources>

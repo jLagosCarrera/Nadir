@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="end">Final</string>
+    <string name="play">Jugar</string>
+    <string name="tutorial">Tutorial</string>
+    <string name="testers">Probadores</string>
+    <string name="options">Ajustes</string>
+    <string name="exit">Salir</string>
+    <string name="music">Musica</string>
+    <string name="sound">Sonido</string>
+    <string name="vibration">Vibración</string>
+    <string name="info">Información</string>
+    <string name="credits">Créditos</string>
+    <string name="gameInfo">Nadir es un juego sencillo en el que se prueba la generación procedural de mapas. Intenta llegar al final dónde deberás sacudir el móvil para terminar.</string>
+    <string name="controls">Los controles son simples e intuitivos, 1 moverse a la izquierda, 2 moverse a la derecha, 3 saltar y 4 volver al menú</string>
+    <string name="shakeEnd">Cuando llegues al final lo único que debes hacer es sacudir el teléfono, te daras cuenta porque el borde de la pantalla se volverá v</string>
+    <string name="sprites">Todos los sprites son gratuitos, gracias a Luis Zuno (@ansimuz) por el personaje y el parallax, a Ciera Elizabeth (@SugarMoonWitch) por el fondo y @SpiderDave por los bloques</string>
+    <string name="audio">Gracias a Tomás Cardenal por su canción Antares usada en el juego. El resto del audio usado está realizado por mi y mi voz.</string>
+    <string name="spThanks">Agradecimientos especiales a Tomás Cardenal y Nuria Oujo por estar ahí apoyándome durante el desarrollo de este juego. Agradecimientos también a mis profesores Javier Conde, Curro Bellas y Mila Ausín por lo aprendido estos 2 años</string>
+    <string name="thanks">Gracias a todos por jugar este juego, probablemente no sea lo mejor y necesite más trabajo pero es una buena pieza para mostrar generacion procedural de un laberinto 2d. Sígueme en twitter @lagoscrack e insta @juliolagos98, trabajo de Julio Lagos Carrera, estudiante del Colegio Vivas, 2019</string>
+</resources>

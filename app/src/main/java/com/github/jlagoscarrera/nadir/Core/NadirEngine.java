@@ -11,12 +11,14 @@ import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
-import com.github.jlagoscarrera.nadir.Scenes.Tutorial;
+import com.github.jlagoscarrera.nadir.Scenes.Credits;
+import com.github.jlagoscarrera.nadir.Scenes.Information;
 import com.github.jlagoscarrera.nadir.Scenes.Testers;
 import com.github.jlagoscarrera.nadir.Scenes.Menu;
 import com.github.jlagoscarrera.nadir.Scenes.Options;
 import com.github.jlagoscarrera.nadir.Scenes.Play;
 import com.github.jlagoscarrera.nadir.Scenes.Scene;
+import com.github.jlagoscarrera.nadir.Scenes.Tutorial;
 import com.github.jlagoscarrera.nadirGame.R;
 
 import java.io.IOException;
@@ -139,8 +141,17 @@ public class NadirEngine extends SurfaceView implements SurfaceHolder.Callback {
                     case 1:
                         actualScene = new Play(this, 1, screenWidth, screenHeight);
                         break;
-                    case 96:
+                    case 93:
+                        //
+                        break;
+                    case 94:
                         actualScene = new Tutorial(this, 1, screenWidth, screenHeight);
+                        break;
+                    case 95:
+                        actualScene = new Credits(this, 1, screenWidth, screenHeight);
+                        break;
+                    case 96:
+                        actualScene = new Information(this, 1, screenWidth, screenHeight);
                         break;
                     case 97:
                         actualScene = new Testers(this, 1, screenWidth, screenHeight);

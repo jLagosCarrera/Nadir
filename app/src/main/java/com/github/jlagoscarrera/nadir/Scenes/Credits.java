@@ -1,6 +1,5 @@
 package com.github.jlagoscarrera.nadir.Scenes;
 
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -14,14 +13,12 @@ import com.github.jlagoscarrera.nadir.Components.MenuButton;
 import com.github.jlagoscarrera.nadir.Core.NadirEngine;
 import com.github.jlagoscarrera.nadirGame.R;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 /**
- * The tutorial scene.
+ * The credits scene.
  */
-public class Tutorial extends Scene {
+public class Credits extends Scene {
     /**
      * The button for going back to Information.
      */
@@ -35,35 +32,31 @@ public class Tutorial extends Scene {
      */
     MenuButton next;
     /**
-     * Tutorial info
+     * Credits info
      */
-    MenuButton tuto;
+    MenuButton credits;
     /**
-     * Current tutorial progress
+     * Current credits progress
      */
-    int currentTutoProgress;
+    int currentCreditsProgress;
     /**
-     * Maximum tutorial scenes
+     * Maximum credit scenes
      */
-    int maxTutoProgress;
+    int maxCreditScenes;
     /**
-     * Paint for text in the tutorial
+     * Paint for text in the credits
      */
     Paint pText;
-    /**
-     * Images for tutorial
-     */
-    ArrayList<Bitmap> tutoImages = new ArrayList<>();
 
     /**
-     * Instantiates a new tutorial scene.
+     * Instantiates a new credits scene.
      *
      * @param gameReference the game engine reference
      * @param sceneId       the asociated scene id
      * @param screenWidth   the screen width
      * @param screenHeight  the screen height
      */
-    public Tutorial(NadirEngine gameReference, int sceneId, int screenWidth, int screenHeight) {
+    public Credits(NadirEngine gameReference, int sceneId, int screenWidth, int screenHeight) {
         super(gameReference, sceneId, screenWidth, screenHeight);
 
         //Btn Back
@@ -79,29 +72,17 @@ public class Tutorial extends Scene {
         next.setIcon(BitmapFactory.decodeResource(gameReference.getResources(), R.mipmap.rightarrow));
 
         //Tutorial drawing surface
-        tuto = new MenuButton(widthDiv * 4, 0, widthDiv * 20, screenHeight);
-        tuto.getpButton().setColor(Color.rgb(173, 179, 188));
-        tuto.getpButton().setAlpha(220);
+        credits = new MenuButton(widthDiv * 4, 0, widthDiv * 20, screenHeight);
+        credits.getpButton().setColor(Color.rgb(173, 179, 188));
+        credits.getpButton().setAlpha(220);
 
         //Text paint
         pText = new Paint();
-        pText.setTextSize((int) (tuto.getButton().height() / 10));
+        pText.setTextSize((int) (credits.getButton().height() / 15));
         pText.setTypeface(Typeface.create(Typeface.createFromAsset(gameReference.getContext().getAssets(), "font/Poiretone.ttf"), Typeface.BOLD));
 
-        //Tutorial images
-        Bitmap aux;
-        aux = BitmapFactory.decodeResource(gameReference.getResources(), R.mipmap.tuto1);
-        aux = Bitmap.createScaledBitmap(aux,
-                tuto.getButton().width(), aux.getHeight()-(tuto.getButton().height()-aux.getHeight())/2, true);
-        tutoImages.add(aux);
-        aux = BitmapFactory.decodeResource(gameReference.getResources(), R.mipmap.tuto2);
-        aux = Bitmap.createScaledBitmap(aux,
-                tuto.getButton().width(), aux.getHeight()-(tuto.getButton().height()-aux.getHeight())/2, true);
-        tutoImages.add(aux);
-
-
-        currentTutoProgress = 0;
-        maxTutoProgress = 4;
+        currentCreditsProgress = 0;
+        maxCreditScenes = 3;
     }
 
     /**
@@ -121,10 +102,10 @@ public class Tutorial extends Scene {
             case MotionEvent.ACTION_UP:             //Last finger up.
             case MotionEvent.ACTION_POINTER_UP:     //Any finger that isnt the last up.
                 if (isTouched(btnBack.getButton(), event) && sceneId != 0) return 96;
-                else if (isTouched(prev.getButton(), event) && currentTutoProgress > 0)
-                    currentTutoProgress--;
-                else if (isTouched(next.getButton(), event) && currentTutoProgress < maxTutoProgress)
-                    currentTutoProgress++;
+                else if (isTouched(prev.getButton(), event) && currentCreditsProgress > 0)
+                    currentCreditsProgress--;
+                else if (isTouched(next.getButton(), event) && currentCreditsProgress < maxCreditScenes)
+                    currentCreditsProgress++;
                 break;
             case MotionEvent.ACTION_MOVE: //Any finger is moved.
                 break;
@@ -153,41 +134,43 @@ public class Tutorial extends Scene {
         try {
             //Draw parallax
             drawParallax(c);
-            tuto.draw(c);
+            credits.draw(c);
             prev.draw(c);
             next.draw(c);
 
             int offset;
-            switch (currentTutoProgress) {
+            switch (currentCreditsProgress) {
                 case 0:
                     offset = 0;
-                    for (String s : splitString(gameReference.getContext().getString(R.string.gameInfo))) {
+                    for (String s : splitString(gameReference.getContext().getString(R.string.sprites))) {
                         c.drawText(s,
-                                tuto.getLeft(), tuto.getTop() + pText.getTextSize() + offset, pText);
+                                credits.getLeft(), credits.getTop() + pText.getTextSize() + offset, pText);
                         offset += pText.getTextSize() + 5;
                     }
                     break;
                 case 1:
                     offset = 0;
-                    for (String s : splitString(gameReference.getContext().getString(R.string.controls))) {
+                    for (String s : splitString(gameReference.getContext().getString(R.string.audio))) {
                         c.drawText(s,
-                                tuto.getLeft(), tuto.getTop() + pText.getTextSize() + offset, pText);
+                                credits.getLeft(), credits.getTop() + pText.getTextSize() + offset, pText);
                         offset += pText.getTextSize() + 5;
                     }
                     break;
                 case 2:
-                    c.drawBitmap(tutoImages.get(0), tuto.getLeft(), (tuto.getButton().height()-tutoImages.get(1).getHeight())/2, null);
-                    break;
-                case 3:
                     offset = 0;
-                    for (String s : splitString(gameReference.getContext().getString(R.string.shakeEnd))) {
+                    for (String s : splitString(gameReference.getContext().getString(R.string.spThanks))) {
                         c.drawText(s,
-                                tuto.getLeft(), tuto.getTop() + pText.getTextSize() + offset, pText);
+                                credits.getLeft(), credits.getTop() + pText.getTextSize() + offset, pText);
                         offset += pText.getTextSize() + 5;
                     }
                     break;
-                case 4:
-                    c.drawBitmap(tutoImages.get(1), tuto.getLeft(), (tuto.getButton().height()-tutoImages.get(1).getHeight())/2, null);
+                case 3:
+                    offset = 0;
+                    for (String s : splitString(gameReference.getContext().getString(R.string.thanks))) {
+                        c.drawText(s,
+                                credits.getLeft(), credits.getTop() + pText.getTextSize() + offset, pText);
+                        offset += pText.getTextSize() + 5;
+                    }
                     break;
             }
 
@@ -207,8 +190,8 @@ public class Tutorial extends Scene {
     private ArrayList<String> splitString(String splittedString) {
         ArrayList<String> parts = new ArrayList<>();
         int length = splittedString.length();
-        for (int i = 0; i < length; i += 20) {
-            parts.add(splittedString.substring(i, Math.min(length, i + 20)) + "...");
+        for (int i = 0; i < length; i += 30) {
+            parts.add(splittedString.substring(i, Math.min(length, i + 30)) + "...");
         }
         return parts;
     }
