@@ -22,6 +22,8 @@ import com.github.jlagoscarrera.nadir.Core.NadirEngine;
 import com.github.jlagoscarrera.nadir.Scripts.RoomFiller;
 import com.github.jlagoscarrera.nadirGame.R;
 
+import java.util.concurrent.TimeUnit;
+
 /**
  * The play scene.
  */
@@ -144,6 +146,14 @@ public class Play extends Scene implements SensorEventListener {
      * Menu button that will say us that we finished
      */
     MenuButton end;
+    /**
+     * Ending time
+     */
+    MenuButton endTitle;
+    /**
+     * Stating milliseconds of the run
+     */
+    long startTime;
 
     /**
      * Instantiates a new play scene.
@@ -180,9 +190,14 @@ public class Play extends Scene implements SensorEventListener {
         blockX = 0;
         blockY = 0;
 
-        end = new MenuButton(widthDiv * 6, heighDiv * 4, widthDiv * 18, heighDiv * 8);
-        end.getpText().setTextSize((int) (heighDiv * 3 * 0.75));
-        end.getpText().setTypeface(Typeface.createFromAsset(gameReference.getContext().getAssets(), "font/Seaside.ttf"));
+        endTitle = new MenuButton(widthDiv * 6, heighDiv * 2, widthDiv * 18, heighDiv * 4);
+        endTitle.getpButton().setColor(Color.TRANSPARENT);
+        endTitle.getpButtonBorder().setColor(Color.TRANSPARENT);
+        endTitle.getpText().setTextSize((int) (heighDiv * 2 * 0.75));
+        endTitle.getpText().setTypeface(Typeface.createFromAsset(gameReference.getContext().getAssets(), "font/Poiretone.ttf"));
+        end = new MenuButton(widthDiv * 6, heighDiv * 6, widthDiv * 18, heighDiv * 10);
+        end.getpText().setTextSize((int) (heighDiv * 4 * 0.75));
+        end.getpText().setTypeface(Typeface.createFromAsset(gameReference.getContext().getAssets(), "font/Poiretone.ttf"));
         end.setText(gameReference.getContext().getString(R.string.end));
 
         //Btn Back
@@ -264,6 +279,8 @@ public class Play extends Scene implements SensorEventListener {
         sensorManager.registerListener(this, acelerometro, SensorManager.SENSOR_DELAY_NORMAL);
         proximidad = sensorManager.getDefaultSensor(Sensor.TYPE_PROXIMITY);
         sensorManager.registerListener(this, proximidad, SensorManager.SENSOR_DELAY_NORMAL);
+
+        startTime = System.currentTimeMillis();
     }
 
     /**
@@ -279,29 +296,33 @@ public class Play extends Scene implements SensorEventListener {
         switch (action) {
             case MotionEvent.ACTION_DOWN:           //First finger touches.
             case MotionEvent.ACTION_POINTER_DOWN:   //Second and next touches.
-                if (isTouched(btnJump.getButton(), event) && !jumping && !falling) {
-                    jumping = true;
-                    falling = false;
-                }
-                if (isTouched(btnLeft.getButton(), event)) {
-                    movingLeft = true;
-                    movingRight = false;
-                }
-                if (isTouched(btnRight.getButton(), event)) {
-                    movingRight = true;
-                    movingLeft = false;
+                if (keepDrawing) {
+                    if (isTouched(btnJump.getButton(), event) && !jumping && !falling) {
+                        jumping = true;
+                        falling = false;
+                    }
+                    if (isTouched(btnLeft.getButton(), event)) {
+                        movingLeft = true;
+                        movingRight = false;
+                    } else if (isTouched(btnRight.getButton(), event)) {
+                        movingRight = true;
+                        movingLeft = false;
+                    }
                 }
                 break;
             case MotionEvent.ACTION_UP:             //Last finger up.
             case MotionEvent.ACTION_POINTER_UP:     //Any finger that isnt the last up.
-                if (isTouched(btnBack.getButton(), event) && sceneId != 0) return 0;
-                if (isTouched(btnLeft.getButton(), event)) {
-                    movingLeft = false;
+                if (keepDrawing) {
+                    if (isTouched(btnBack.getButton(), event) && sceneId != 0) return 0;
+                    if (isTouched(btnLeft.getButton(), event)) {
+                        movingLeft = false;
+                    } else if (isTouched(btnRight.getButton(), event)) {
+                        movingRight = false;
+                    }
                 }
-                if (isTouched(btnRight.getButton(), event)) {
-                    movingRight = false;
+                if (isTouched(end.getButton(), event) && !keepDrawing) {
+                    return 93;
                 }
-                if (isTouched(end.getButton(), event) && !keepDrawing) return 93;
                 break;
             case MotionEvent.ACTION_MOVE: //Any finger is moved.
                 break;
@@ -367,9 +388,8 @@ public class Play extends Scene implements SensorEventListener {
     //Drawing routine, called from the game thread.
     public void draw(Canvas c) {
         try {
-            c.drawBitmap(currentBackground, 0, 0, null);
-
             if (keepDrawing) {
+                c.drawBitmap(currentBackground, 0, 0, null);
                 c.save();
                 c.translate((-r.level.getStartRoom().getX() * blockWidth * 10) + player.offSetX, (-r.level.getStartRoom().getY() * blockHeigth * 8) + player.offSetY);
                 if (r.isGenerated) {
@@ -407,11 +427,12 @@ public class Play extends Scene implements SensorEventListener {
                 if (playerIsOnEnd) {
                     c.drawRect(0, 0, screenWidth, screenHeight, endPaint);
                 }
+                btnBack.draw(c);
             } else {
+                drawParallax(c);
+                endTitle.draw(c);
                 end.draw(c);
             }
-
-            btnBack.draw(c);
         } catch (Exception e) {
             Log.i("Drawing error", e.getLocalizedMessage());
             e.printStackTrace();
@@ -455,6 +476,11 @@ public class Play extends Scene implements SensorEventListener {
                     float speed = Math.abs(x + y + z - last_x - last_y - last_z) / milisDiff * 10000;
 
                     if (speed > SENSIBILITY && playerIsOnEnd) {
+                        long endTime = System.currentTimeMillis() - startTime;
+                        gameReference.endTime = String.format("%02d:%02d:%02d", TimeUnit.MILLISECONDS.toHours(endTime),
+                                TimeUnit.MILLISECONDS.toMinutes(endTime) % TimeUnit.HOURS.toMinutes(1),
+                                TimeUnit.MILLISECONDS.toSeconds(endTime) % TimeUnit.MINUTES.toSeconds(1));
+                        endTitle.setText(gameReference.getContext().getString(R.string.ended) + " " + gameReference.endTime);
                         keepDrawing = false;
                     }
 

@@ -18,4 +18,6 @@
     <string name="audio">Thanks to Tomás Cardenal for its song Antares used in the game. The other audio used in the game is made by me and my voice.</string>
     <string name="spThanks">Special thanks to Tomás Cardenal and Nuria Oujo for being there supporting during the development of this game. Special thanks to my teachers Javier Conde, Curro Bellas and Mila Ausín for what I\'ve learnt this 2 years</string>
     <string name="thanks">Thanks all for playing this game, it might not be the best and maybe needs more work but its a great piece for showing procedural generation on a 2d maze. Follow me on twitter @lagoscrack and insta @juliolagos98, work of Julio Lagos Carrera, student from Colegio Vivas on 2019</string>
+    <string name="accept">Accept</string>
+    <string name="ended">Ended in:</string>
 </resources>

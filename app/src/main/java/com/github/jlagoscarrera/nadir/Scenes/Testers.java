@@ -1,9 +1,12 @@
 package com.github.jlagoscarrera.nadir.Scenes;
 
-import android.content.Context;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.graphics.Typeface;
+import android.support.v4.view.GestureDetectorCompat;
 import android.util.Log;
+import android.view.GestureDetector;
 import android.view.MotionEvent;
 
 import com.github.jlagoscarrera.nadir.Components.MenuButton;
@@ -18,6 +21,22 @@ public class Testers extends Scene {
      * The button for going back to menu.
      */
     MenuButton btnBack;
+    /**
+     * The detector for the fling action.
+     */
+    GestureDetectorCompat detectorScroll;
+    /**
+     * Paint for the records
+     */
+    Paint text;
+    /**
+     * Offset for the translate.
+     */
+    float offsetY;
+    /**
+     * Max offset for the translate.
+     */
+    float maxOffset;
 
     /**
      * Instantiates a new Testers scene.
@@ -29,6 +48,25 @@ public class Testers extends Scene {
      */
     public Testers(NadirEngine gameReference, int sceneId, int screenWidth, int screenHeight) {
         super(gameReference, sceneId, screenWidth, screenHeight);
+        offsetY = 0;
+
+        text = new Paint();
+        text.setTextSize((int) (heighDiv * 1.5 * 0.75));
+        text.setTypeface(Typeface.create(Typeface.createFromAsset(gameReference.getContext().getAssets(), "font/Poiretone.ttf"), Typeface.BOLD));
+
+        detectorScroll = new GestureDetectorCompat(gameReference.getContext(), new GestureDetector.SimpleOnGestureListener() {
+            @Override
+            public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
+                if (offsetY + distanceY < 0) {
+                    offsetY = 0;
+                } else if (offsetY + distanceY >= 0 && offsetY + distanceY <= maxOffset) {
+                    offsetY += distanceY;
+                } else {
+                    offsetY = maxOffset;
+                }
+                return true;
+            }
+        });
 
         //Btn Back
         btnBack = new MenuButton((screenWidth / 24) * 23, 0, screenWidth, (screenHeight / 12));
@@ -42,6 +80,8 @@ public class Testers extends Scene {
      * @return the new scene ID
      */
     public int onTouchEvent(MotionEvent event) {
+        detectorScroll.onTouchEvent(event);
+
         int pointerIndex = event.getActionIndex();        //Obtain action index.
         int pointerID = event.getPointerId(pointerIndex); //Obtain id of the pointer asociated to the action.
         int action = event.getActionMasked();             //Obtain type of pulsation.
@@ -81,6 +121,22 @@ public class Testers extends Scene {
         try {
             //Draw parallax
             drawParallax(c);
+
+            c.save();
+            c.translate(0, -offsetY);
+            int startY = 0;
+            for (int i = gameReference.testers.size() - 1; i >= 0; i--) {
+                System.out.println(gameReference.endTime);
+                c.drawText(gameReference.testers.get(i), 5, startY + text.getTextSize(), text);
+                startY += text.getTextSize() + 5;
+            }
+            maxOffset = startY;
+            if (maxOffset > screenHeight) {
+                maxOffset = maxOffset - screenHeight;
+            } else {
+                maxOffset = 0;
+            }
+            c.restore();
 
             btnBack.draw(c);
 

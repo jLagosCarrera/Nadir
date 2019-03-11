@@ -18,4 +18,6 @@
     <string name="audio">Gracias a Tomás Cardenal por su canción Antares usada en el juego. El resto del audio usado está realizado por mi y mi voz.</string>
     <string name="spThanks">Agradecimientos especiales a Tomás Cardenal y Nuria Oujo por estar ahí apoyándome durante el desarrollo de este juego. Agradecimientos también a mis profesores Javier Conde, Curro Bellas y Mila Ausín por lo aprendido estos 2 años</string>
     <string name="thanks">Gracias a todos por jugar este juego, probablemente no sea lo mejor y necesite más trabajo pero es una buena pieza para mostrar generacion procedural de un laberinto 2d. Sígueme en twitter @lagoscrack e insta @juliolagos98, trabajo de Julio Lagos Carrera, estudiante del Colegio Vivas, 2019</string>
+    <string name="accept">Aceptar</string>
+    <string name="ended">Terminado en:</string>
 </resources>

@@ -18,10 +18,12 @@ import com.github.jlagoscarrera.nadir.Scenes.Menu;
 import com.github.jlagoscarrera.nadir.Scenes.Options;
 import com.github.jlagoscarrera.nadir.Scenes.Play;
 import com.github.jlagoscarrera.nadir.Scenes.Scene;
+import com.github.jlagoscarrera.nadir.Scenes.TestersAdd;
 import com.github.jlagoscarrera.nadir.Scenes.Tutorial;
 import com.github.jlagoscarrera.nadirGame.R;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 /**
  * The game engine.
@@ -92,6 +94,14 @@ public class NadirEngine extends SurfaceView implements SurfaceHolder.Callback {
      * The game activity.
      */
     public static NadirActivity activity;
+    /**
+     * List of testers that played the game.
+     */
+    public ArrayList<String> testers = new ArrayList<>();
+    /**
+     * End time of a run.
+     */
+    public String endTime;
 
 
     /**
@@ -142,19 +152,19 @@ public class NadirEngine extends SurfaceView implements SurfaceHolder.Callback {
                         actualScene = new Play(this, 1, screenWidth, screenHeight);
                         break;
                     case 93:
-                        //
+                        actualScene = new TestersAdd(this, 93, screenWidth, screenHeight);
                         break;
                     case 94:
-                        actualScene = new Tutorial(this, 1, screenWidth, screenHeight);
+                        actualScene = new Tutorial(this, 94, screenWidth, screenHeight);
                         break;
                     case 95:
-                        actualScene = new Credits(this, 1, screenWidth, screenHeight);
+                        actualScene = new Credits(this, 95, screenWidth, screenHeight);
                         break;
                     case 96:
-                        actualScene = new Information(this, 1, screenWidth, screenHeight);
+                        actualScene = new Information(this, 96, screenWidth, screenHeight);
                         break;
                     case 97:
-                        actualScene = new Testers(this, 1, screenWidth, screenHeight);
+                        actualScene = new Testers(this, 97, screenWidth, screenHeight);
                         break;
                     case 98:
                         actualScene = new Options(this, 98, screenWidth, screenHeight);

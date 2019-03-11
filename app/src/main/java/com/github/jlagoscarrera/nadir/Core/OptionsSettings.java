@@ -72,7 +72,7 @@ public class OptionsSettings {
         Editor editor = options.edit();
         editor.putBoolean(musicPreference, isMusicPlaying());
         editor.putBoolean(soundsPreference, isPlaySounds());
-        editor.putBoolean(musicPreference, isVibrate());
+        editor.putBoolean(vibrationPreference, isVibrate());
         editor.commit();
     }
 

@@ -161,7 +161,6 @@ public class Menu extends Scene {
                 else if (isTouched(btnOptions.getButton(), event)) return 98;
                 else if (isTouched(btnExit.getButton(), event)) return 99;
 
-
                 if (isTouched(btnMusic.getButton(), event)) {
                     setMusic();
                     drawMusicIcon();
